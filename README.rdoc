@@ -1,0 +1,24 @@
+=== Useful
+
+
+ShopifyAPI::Base.site = 'https://447aa894bc1f575eb07cd5a43a9dccdc:31c5f5b26b6f1cf212f8a91a227cb7ff@flatley-farrell8724.myshopify.com/admin'
+shop = ShopifyAPI::Shop.current
+
+
+http://flatley-farrell8724.myshopify.com
+info@thinkorange.pt
+oranges*
+
+
+front:
+whewya
+
+=== Payment
+
+You can make test orders by using the following credentials:
+Credit Card Number
+1
+Expiration Date
+[some time in the future]
+Card security code
+123
