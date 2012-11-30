@@ -5,6 +5,9 @@
  *= require_self
  *= require twitter/bootstrap
  *= require imports
- *= require shopify_app_buttons
- *= require shopify_app
+ * require shopify_app_buttons
+ * require shopify_app
+ *= require variables
+ *= require theme
+ *= require sousa-overrides
 */

@@ -1,0 +1,310 @@
+/
+  Navbar
+  \==================================================
+%section#stats
+  %header
+    .pull-right
+      %a.btn.btn-small Edit
+      %a.btn.btn-small Shoot me
+    %h1 Dashboard
+  .row-fluid
+    .span2
+      .kpi 45,000
+      %div
+        %small total income
+    .span2
+      .kpi 32,403
+      %div
+        %small torsdag på fredag
+    .span2
+      .kpi 21,388
+      %div
+        %small scores today
+    .span2
+      .kpi 2,105
+      %div
+        %small income today
+    .span2
+      .kpi 3,339
+      %div
+        %small income yesterday
+    .span2
+      .kpi 8,100
+      %div
+        %small income 2012
+/
+  Graph
+  \==================================================
+%section#forms
+  .sub-header
+    %h2 Graphs with Highcharts
+  .row-fluid.row-fluid-alternate-bg
+    .span12
+      #mainChart
+/
+  Tables
+  \==================================================
+%section#tables
+  .sub-header
+    %h2 Tables
+  %table.table.table-striped.full-section.table-hover
+    %thead
+      %tr
+        %th Name
+        %th Chances
+        %th Completed
+        %th USD
+        %th EUR
+        %th Highest day
+    %tbody
+      %tr
+        %td.primary HTML5
+        %td 87%
+        %td
+          .progress.progress-mini
+            .bar{:style => "width: 35%"}
+        %td 32,854
+        %td 40,633
+        %td December 15, 2012
+      %tr
+        %td.primary CSS3
+        %td 57%
+        %td
+          .progress.progress-mini
+            .bar{:style => "width: 62%"}
+        %td 10,537
+        %td 30,352
+        %td December 7, 2012
+      %tr
+        %td.primary JavaScript 8.8
+        %td 87%
+        %td
+          .progress.progress-mini
+            .bar{:style => "width: 40%"}
+        %td 39,104
+        %td 33,241
+        %td December 21, 2012
+      %tr
+        %td.primary HTML5
+        %td 87%
+        %td
+          .progress.progress-mini
+            .bar{:style => "width: 85%"}
+        %td 32,854
+        %td 40,633
+        %td December 15, 2012
+      %tr
+        %td.primary CSS3
+        %td 57%
+        %td
+          .progress.progress-mini
+            .bar{:style => "width: 89%"}
+        %td 10,537
+        %td 30,352
+        %td December 7, 2012
+      %tr
+        %td.primary JavaScript 8.8
+        %td 87%
+        %td
+          .progress.progress-mini
+            .bar{:style => "width: 15%"}
+        %td 39,104
+        %td 33,241
+        %td December 21, 2012
+/
+  Forms
+  \==================================================
+%section#forms
+  .sub-header
+    %h2 Forms
+  .row-fluid
+    .span12
+      %form.form-horizontal
+        .control-group
+          %label.control-label{:for => "input01"} Campaign name
+          .controls
+            %input#input01.input-large{:type => "text"}
+        .control-group
+          %label.control-label{:for => "input01"} Campaign tagline
+          .controls
+            %input#input01.input-large{:type => "text"}
+              %p.help-block Some help text looks like this.
+        .control-group
+          %label.control-label{:for => "input01"} Max weekly amount
+          .controls
+            %input.input-small{:type => "text"}
+        /
+          <div class="control-group">
+          <label class="control-label" for="select01">Country</label>
+          <div class="controls">
+          <select id="select01">
+          <option>Sweden</option>
+          <option>Kenya</option>
+          <option>Zimbabwe</option>
+          <option>United States</option>
+          </select>
+          </div>
+          </div>
+        .control-group.error
+          %label.control-label{:for => "inputError"} Input with error
+          .controls
+            %input#inputError{:type => "text"}
+              %span.help-inline Username taken
+        .control-group.success
+          %label.control-label{:for => "inputSuccess"} Input with success
+          .controls
+            %input#inputSuccess{:type => "text"}
+              %span.help-inline Username available
+        .control-group
+          %label.control-label{:for => "input01"} Password
+          .controls
+            %input#input01.input-large{:type => "password"}
+        .control-group
+          %label.control-label{:for => "textarea"} Description
+          .controls
+            %textarea#textarea.input-xlarge{:rows => "5"}
+        .control-group
+          %label.control-label{:for => "optionsCheckbox"} Access
+          .controls
+            %label.checkbox.inline
+              %input#inlineCheckbox1{:type => "checkbox", :value => "option1"}
+                Publishers
+            %label.checkbox.inline
+              %input#inlineCheckbox2{:type => "checkbox", :value => "option2"}
+                Authors
+            %label.checkbox.inline
+              %input#inlineCheckbox3{:type => "checkbox", :value => "option3"}
+                Admins
+  .form-actions
+    %button.btn.btn-primary{:type => "submit"} Save changes
+    %button.btn{:type => "reset"} Cancel
+/
+  Buttons
+  \==================================================
+%section#buttons
+  .sub-header
+    %h2 Buttons
+  .row-fluid
+    .span12
+      %table.table
+        %thead
+          %td Type
+          %td Default
+          %td Primary
+        %tbody
+          %tr
+            %td.primary Small
+            %td
+              %a.btn.btn-small Click me
+            %td
+              %a.btn.btn-primary.btn-small Click me
+          %tr
+            %tr
+              %td.primary Normal
+              %td
+                %a.btn Click me
+              %td
+                %a.btn.btn-primary Click me
+            %td.primary Disabled
+            %td
+              %a.btn.disabled Click me
+            %td
+              %a.btn.btn-primary.disabled Click me
+          %tr
+            %td.primary With icon
+            %td
+              %a.btn
+                %i.icon-cog
+                Click me
+            %td
+              %a.btn.btn-primary
+                %i.icon-shopping-cart.icon-white
+                Click me
+          %tr
+            %td.primary Split
+            %td
+              .btn-group
+                %a.btn Click me
+                %a.btn.dropdown-toggle{"data-toggle" => "dropdown"}
+                  %span.caret
+                %ul.dropdown-menu
+                  %li
+                    %a Action
+                  %li
+                    %a Another action
+                  %li
+                    %a Something else here
+                  %li.divider
+                  %li
+                    %a Separated link
+            %td
+              .btn-group
+                %a.btn.btn-primary Click me
+                %a.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown"}
+                  %span.caret
+                %ul.dropdown-menu
+                  %li
+                    %a Action
+                  %li
+                    %a Another action
+                  %li
+                    %a Something else here
+                  %li.divider
+                  %li
+                    %a Separated link
+              / /btn-group
+          %tr
+            %td.primary Large
+            %td
+              %a.btn.btn-large Click me
+            %td
+              %a.btn.btn-primary.btn-large Click me
+%section#progress-bars
+  .sub-header
+    %h2 Progress bars
+  .row-fluid
+    %table.table
+      %thead
+        %td Class
+        %td Looks
+      %tbody
+        %tr
+          %td
+            %code .progress
+          %td
+            .progress.no-margin
+              .bar{:style => "width: 60%;"}
+          %tr
+            %td
+              %code .progress-mini
+            %td
+              .progress.progress-mini
+                .bar{:style => "width: 45%"}
+/
+  Miscellaneous
+  \==================================================
+%section#miscellaneous
+  .sub-header
+    %h2 Alerts
+  .row-fluid
+    .span12
+      .alert.alert-block
+        %a.close ×
+        %h4.alert-heading Alert block
+        %p Best check yo self, you're not looking too good. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+  .row-fluid
+    .span4
+      .alert.alert-error
+        %a.close ×
+        %strong Error
+        Change a few things up and try submitting again.
+    .span4
+      .alert.alert-success
+        %a.close ×
+        %strong Success
+        You successfully read this important alert message.
+    .span4
+      .alert.alert-info
+        %a.close ×
+        %strong Information
+        This alert needs your attention, but it's not super important.

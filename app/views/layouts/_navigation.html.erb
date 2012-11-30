@@ -1,0 +1,16 @@
+<%= link_to 'InvoiceXpress', '/', :class => 'brand' %>
+<span class="tagline">a Invoice App for Shoppify. <a href="http://www.invoicexpress.pt">Read more.</a></span>
+<% if shop_session %>
+<div class="nav-collapse collapse" id="main-menu">
+  <div class="auth pull-right">
+      <img class="avatar" src="/assets/littke.png">
+      <span class="name"><%= shop_session.url%></span><br/>
+      <span class="links">
+         <%= link_to raw('Storefront'), "http://"+shop_session.url, :target => 'blank' %>
+         <%= link_to raw('Admin'), "http://"+shop_session.url+"/admin", :target => 'blank' %>
+         <%= link_to raw('Logout'), logout_path, :method => :delete %>
+      </span>
+  </div>
+</div>
+<%end%>
+ 
