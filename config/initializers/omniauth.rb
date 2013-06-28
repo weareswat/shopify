@@ -5,7 +5,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
 
            # Example permission scopes - see http://api.shopify.com/authentication.html for full listing
            # :scope => 'read_orders, write_products',
-           :scope => "write_products,read_orders",
+           :scope => "read_products, read_orders, read_customers",
            :setup => lambda {|env| 
                        params = Rack::Utils.parse_query(env['QUERY_STRING'])
                        site_url = "https://#{params['shop']}"

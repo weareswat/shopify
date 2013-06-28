@@ -5,6 +5,7 @@
  *= require_self
  *= require twitter/bootstrap
  *= require imports
- *= require shopify_app_buttons
+ *= require formtastic-bootstrap
+ *= require metro-bootstrap
  *= require shopify_app
 */

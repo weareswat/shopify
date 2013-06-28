@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  store_url: MyString
+  email: MyString
+  invoice_user: MyString
+  invoice_api: MyString
+
+two:
+  name: MyString
+  store_url: MyString
+  email: MyString
+  invoice_user: MyString
+  invoice_api: MyString

@@ -1,5 +1,5 @@
-/* SCSS
-============================================================= */
+@import "font-awesome";
+
 /* Mixins */
 @mixin rounded($px:3px) { -webkit-border-radius:$px; -moz-border-radius:$px; border-radius:$px; }
 @mixin border-radius($tl,$tr,$br,$bl) { -webkit-border-radius:$tl $tr $br $bl; -moz-border-radius:$tl $tr $br $bl; border-radius:$tl $tr $br $bl; }
@@ -29,63 +29,62 @@ body { padding-top: 40px;}
 
 footer { margin-top: 7px; padding-top: 7px; color:#aaa;}
 
-a { color:$col-blue;
-  &:hover { color:$col-blue-hover; text-decoration:none;}
-}
+// a { color:$col-blue;
+//   &:hover { color:$col-blue-hover; text-decoration:none;}
+// }
 
-.dropdown-menu li > a:hover, .dropdown-menu .active > a, .dropdown-menu .active > a:hover {
-  background-color:$col-blue !important;
-  [class^="icon-"] { background-image: url('/assets/twitter/bootstrap/glyphicons-halflings-white.png');}
-}
+// .dropdown-menu li > a:hover, .dropdown-menu .active > a, .dropdown-menu .active > a:hover {
+//   background-color:$col-blue !important;
+//   [class^="icon-"] { background-image: url('/assets/twitter/bootstrap/glyphicons-halflings-white.png');}
+// }
 
 .container {
   > footer p { text-align: center;}
   > .content { background-color: #fff; padding: 20px; margin: 0 -20px; @include border-radius(0,0,6px,6px); @include box-shadow(0,1px,2px);}
 }
 
-.page-header h1 { color:$col-blue;}
+// .page-header h1 { color:$col-blue;}
 
 .content { min-height: 500px;}
 
-[class^="icon-"] { background-image: url('/assets/twitter/bootstrap/glyphicons-halflings.png');}
+// [class^="icon-"] { background-image: url('/assets/twitter/bootstrap/glyphicons-halflings.png');}
+// .icon-white { background-image: url('/assets/twitter/bootstrap/glyphicons-halflings-white.png');}
 
-.icon-white { background-image: url('/assets/twitter/bootstrap/glyphicons-halflings-white.png');}
+// .navbar {
+//   .brand { color: #fff;}
+//   .navbar-inner { background-image:none; background-color:#000; box-shadow:none;}
+//   .nav > li.active > a, .nav > li.active > a:hover { background-color: #222;}
+//   p a { color: #ffffff;}
+// }
 
-.navbar {
-  .brand { color: #fff;}
-  .navbar-inner { background-image:none; background-color:#000; box-shadow:none;}
-  .nav > li.active > a, .nav > li.active > a:hover { background-color: #222;}
-  p a { color: #ffffff;}
-}
+// .navbar .nav > li > a:hover, .navbar .dropdown-menu a:hover { background-color: #171717;}
 
-.navbar .nav > li > a:hover, .navbar .dropdown-menu a:hover { background-color: #171717;}
+// .btn-navbar {
+//   background-color: #111;
+//   background-image: none;
+//   border-color:#222;
+//   -webkit-box-shadow: none;
+//   -moz-box-shadow: none;
+//   box-shadow: none;
+// }
+// .btn-navbar:hover { border-color:#333;}
+// .btn-navbar:before { opacity:0;}
 
-.btn-navbar {
-  background-color: #111;
-  background-image: none;
-  border-color:#222;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
-.btn-navbar:hover { border-color:#333;}
-.btn-navbar:before { opacity:0;}
+// input:focus, textarea:focus {
+//   border-color: rgba(64,161,201, 0.8);
+//   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(64,161,201, 0.6);
+//   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(64,161,201, 0.6);
+//   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(64,161,201, 0.6);
+// }
 
-input:focus, textarea:focus {
-  border-color: rgba(64,161,201, 0.8);
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(64,161,201, 0.6);
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(64,161,201, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(64,161,201, 0.6);
-}
+// input[type=text].btn-large { height:20px;}
 
-input[type=text].btn-large { height:20px;}
-
-a.thumbnail:hover {
-  border-color: rgba(64,161,201, 0.8);
-  -webkit-box-shadow: 0 1px 4px rgba(64,161,201, 0.25);
-  -moz-box-shadow: 0 1px 4px rgba(64,161,201, 0.25);
-  box-shadow: 0 1px 4px rgba(64,161,201, 0.25);
-}
+// a.thumbnail:hover {
+//   border-color: rgba(64,161,201, 0.8);
+//   -webkit-box-shadow: 0 1px 4px rgba(64,161,201, 0.25);
+//   -moz-box-shadow: 0 1px 4px rgba(64,161,201, 0.25);
+//   box-shadow: 0 1px 4px rgba(64,161,201, 0.25);
+// }
 
 @media(max-width: 768px) {
   .container > .content { @include rounded(0);}
@@ -101,13 +100,13 @@ a.thumbnail:hover {
 /* APP CSS
 ============================================================= */
 /* General */
-h1,h2,h3,h4,h5,h6,.brand { 
-  font-family: $open-sans;
-  font-weight:normal;
-  small { letter-spacing:0px;}
-}
+// h1,h2,h3,h4,h5,h6,.brand { 
+//   font-family: $open-sans;
+//   font-weight:normal;
+//   small { letter-spacing:0px;}
+// }
 
-h1,h2 { letter-spacing:-1px;}
+// h1,h2 { letter-spacing:-1px;}
 
 .polaroid { float:right; display:block; padding: 20px; margin: 0 0 50px 50px; border: 1px solid #ccc; border: 1px solid #fff; background: #f5f5f5;
   @include gradient(#f5f5f5,#f0f0f0);
@@ -130,21 +129,4 @@ h1,h2 { letter-spacing:-1px;}
 .modal { max-height:700px; width:auto;
   .modal-body { text-align:center;}
 }
-
-/* "Where do I start?" header -- you can delete this safely (all the way to the bottom) */
-.jumbotron { background: #222; margin:-20px -20px 20px -20px; position: relative;}
-.jumbotron h1 { font-size: 54px; line-height: 1; text-shadow: 0 1px 2px rgba(0, 0, 0, .5);}
-.jumbotron h1, .jumbotron p { margin-right:0; margin-bottom: 9px; color: #fff; text-align: center; text-shadow: 0 1px 1px rgba(0, 0, 0, .3);}
-.jumbotron .inner { background: transparent url('/assets/grid-18px.png') top center; padding: 45px 0; 
-  -webkit-box-shadow: inset 0 -20px 300px rgba(0,0,0,.4); -moz-box-shadow: inset 0 -20px 300px rgba(0,0,0,.4);}
-
-@media (max-width: 480px) {
-  .jumbotron h1,.jumbotron p { text-align: center; margin-right: 0;}
-  .jumbotron h1 { font-size: 45px; margin-right: 0;}
-  .jumbotron p { margin-right: 0; font-size: 18px; line-height: 24px;}}
-@media (min-width: 480px) and (max-width: 768px) {
-  .jumbotron h1 { font-size: 54px;}
-  .jumbotron h1,.jumbotron p { margin-right: 0;}}
-@media (min-width: 768px) and (max-width: 940px) {
-  .jumbotron h1 { font-size: 72px;}}
-
+ 

@@ -1,4 +1,5 @@
 Invoicexpress::Application.routes.draw do
+  
   match 'welcome' => 'home#welcome'
   match 'design' => 'home#design'
 
@@ -10,6 +11,10 @@ Invoicexpress::Application.routes.draw do
   end
 
   root :to => 'home#index'
+
+  resources :invoices
+  resources :shops
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
