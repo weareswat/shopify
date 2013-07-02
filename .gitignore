@@ -9,7 +9,22 @@
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
+.DS_Store
+*.DS_Store
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
-/tmp
+log/*.pid
+tmp/**/*
+config/database.yml
+db/*.sqlite3
+db/sphinx
+public/frags/*
+public/system/*
+public/uploads/*
+public/stylesheets/cache/*
+public/javascripts/cache/*
+tags
+.rvmrc
+logfile
+dump.rdb

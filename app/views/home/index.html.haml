@@ -1,4 +1,3 @@
-
 %br
 
 %section#welcome
@@ -92,7 +91,7 @@
             = link_to order.name, "https://#{shop_session.url}/admin/orders/#{order.id}", :target => 'blank'
           %td
             .btn-group
-              = link_to "View", "https://#{shop_session.url}/admin/orders/#{order.id}", :target => 'blank', :class=>'btn btn-primary'
+              %a.btn View
               %a.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown"}
                 %span.caret
               %ul.dropdown-menu
