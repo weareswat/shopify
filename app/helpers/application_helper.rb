@@ -17,6 +17,7 @@ module ApplicationHelper
      
     status
   end
+
   def orderStatus(order)
     status=""
     if order.financial_status  == 'paid'

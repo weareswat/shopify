@@ -1,55 +1,8 @@
 %br
 
-%section#welcome
-  %header
-    %h1 Dashboard
-    %br
-  
-  .row-fluid
-    .span2
-      %h3 
-    .span3
-      %h3 Today
-    .span3
-      %h3 This week
-    .span4
-      %h3 This month  
-  .row-fluid
-    .span12
-      %ul.thumbnails
-        %li.span3.tile.tile-teal
-          %br
-          = link_to "#" do
-            %i.icon-info-sign.icon-light.icon-4x
-        %li.span3.tile.tile-double.tile-orange
-          = link_to "#" do
-            %h1 2 
-        %li.span3.tile.tile-double.tile-purple
-          = link_to "#" do
-            %h1 23
-        %li.span3.tile.tile-double
-          = link_to "#" do
-            %h1 522
-  .row-fluid
-    .span12
-      %ul.thumbnails
-        %li.span3.tile.tile-teal
-          %br
-          = link_to "#" do
-            %i.icon-cog.icon-light.icon-4x
-        %li.span3.tile.tile-double.tile-orange
-          = link_to "#" do
-            %h1 24k
-        %li.span3.tile.tile-double.tile-purple
-          = link_to "#" do
-            %h1 23k
-        %li.span3.tile.tile-double
-          = link_to "#" do
-            %h1 112k
-
 %section#tables
   %header
-    %h1 Orders
+    %h1 Recent Orders
   
   -if @orders.blank?
     .row-fluid
@@ -66,9 +19,8 @@
           %th Placed by
           %th Payment Status
           %th Fulfillment
-          %th Total
           %th Method
-          %th Invoice
+          %th Total
           %th Action
       %tbody
       - @orders.each do |order| 
@@ -82,16 +34,14 @@
           %td 
             %span.label{:class=>orderFulfilmentStatus(order)}
               = orderFulfilmentLabel(order)
+          %td
+            = order.gateway
           %td 
             = order.total_price
             = order.currency
           %td
-            = order.gateway
-          %td
-            = link_to order.name, "https://#{shop_session.url}/admin/orders/#{order.id}", :target => 'blank'
-          %td
             .btn-group
-              %a.btn View
+              %a.btn.btn-primary{ :href=> "https://#{shop_session.url}/admin/orders/#{order.id}", :target => 'blank'} View
               %a.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown"}
                 %span.caret
               %ul.dropdown-menu
@@ -100,27 +50,4 @@
                 %li.divider
                 %li
                   = link_to 'Send E-mail with Invoice', "#"
-
-
-/
-  Forms
-  \==================================================
-%section#forms
-  .sub-header
-    %h2 Options
-  .row-fluid
-    .span12
-      = semantic_form_for @shop, :html => { :class=>'form-horizontal'} do |f| 
-        = f.inputs do 
-          = f.input :email, :required => true, :input_html => {:class=>'input-xlarge'}, :hint=>'Ex: email@xpto.pt'
-          = f.input :invoice_user, :required => true, :input_html => {:class=>'input-xlarge'}, :hint=>'Ex: asdasdas'
-          = f.input :invoice_api, :required => true, :input_html => {:class=>'input-xlarge'}, :hint=>'Ex: 00asdasd1'
-          
-        = f.inputs :name => "Shopify"  do 
-          = f.input :auto_send_email , :label=>'Automaticaly send e-mail to customer when invoice is created?'
-          = f.input :auto_sequence, :label=>'Use a custom sequence for all invoices created in Shopify?'
-          = f.input :sequence_id, :input_html => {:class=>'input-xlarge'}, :as=>:string
-
-        = f.actions do 
-          = f.action :submit, :as => :button, :label=>'Update', :button_html =>{:class=>'btn btn-primary', :disable_with => 'Wait...' }
-         
+ 

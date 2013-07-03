@@ -1,16 +1,19 @@
+!!!
 %html{:lang => "en"}
   %head
     %title InvoiceXpress Shopify App
-    = stylesheet_link_tag 'application'
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/    
     = csrf_meta_tags
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
-    / %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans", :rel => "stylesheet", :type => "text/css"}/
-    / icons
+    = stylesheet_link_tag 'application'
     %link{:href => "../assets/favicon.png", :rel => "shortcut icon"}/
     %link{:href => "../assets/shopify-57.png", :rel => "apple-touch-icon"}/
     %link{:href => "../assets/shopify-72.png", :rel => "apple-touch-icon", :sizes => "72x72"}/
     %link{:href => "../assets/shopify-114.png", :rel => "apple-touch-icon", :sizes => "114x114"}/
-    / Le HTML5 shim, for IE6-8 support of HTML elements
+
+    /[if lt IE 8]
+      = stylesheet_link_tag "font-awesome-ie7.min.css", media: "all"
+      / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   %body
@@ -21,18 +24,21 @@
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
-          = link_to 'InvoiceXpress', '/', :class => 'brand'
+          = link_to image_tag('logo_main.png', :alt=>'InvoiceXpress'), '/', :class => 'brand'
+
           - if shop_session
             .nav-collapse
               %ul.nav
-                %li{:class=>"#{active_nav_class('home', 'index')}"}
+                %li{:class=>"#{active_nav_class('invoices')}"}
                   =link_to 'Invoices', invoices_path
+                %li{:class=>"#{active_nav_class('home', 'setup')}"}
+                  =link_to 'Setup', '/setup'
                 %li{:class=>"#{active_nav_class('home', 'help')}"}
-                  =link_to 'Help', '/'
-                %li{:class=>"#{active_nav_class('home', 'settings')}"}
-                  =link_to 'Settings', '/'
-                %li{:class=>"#{active_nav_class('home', 'design')}"}
-                  =link_to 'Bootstrap Info', '/design'
+                  =link_to 'Help', '/help'
+                /%li{:class=>"#{active_nav_class('home', 'change_language')}"}
+                /  =link_to image_tag('en_flag.png', :alt=>'English'), '#'
+                %li{:class=>"#{active_nav_class('home', 'change_language')}"}
+                  =link_to image_tag('pt_flag.png', :alt=>'Português'), '#'
 
             %ul.nav.pull-right
               %li.dropdown
@@ -40,8 +46,8 @@
                 %ul.dropdown-menu
                   %li= link_to "Store", "http://"+shop_session.url, :target => 'blank'
                   %li= link_to 'Shopify Admin', "http://"+shop_session.url+"/admin", :target => 'blank'
-                  %li= link_to 'InvoiceXpress', "#", :target => 'blank'
-
+                  - if @shop
+                    %li= link_to 'InvoiceXpress', "https://#{@shop.invoice_user}.invoicexpress.net/", :target => 'blank'
                   %li.divider
                   %li= link_to 'Logout', logout_path, :method => :delete
     .container
@@ -54,7 +60,13 @@
                   %a.close{"data-dismiss" => "alert"} &#215;
                   = content_tag :div, msg, :id => "flash_#{name}" if msg.is_a?(String)
         = yield
+
       %footer
-        %p A Shopify app by Think Orange
+        %p 
+          A Shopify app by
+          %a{:href=>'http://www.invoicexpress.net', :target=>'blank'} InvoiceXpress
+          | View the 
+          %a{:href=>'http://www.invoicexpress.net', :target=>'blank'} Terms
+          All rights reserved
     / /container
     = javascript_include_tag 'application'

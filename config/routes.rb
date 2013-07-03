@@ -2,6 +2,7 @@ Invoicexpress::Application.routes.draw do
   
   match 'welcome' => 'home#welcome'
   match 'design' => 'home#design'
+  match 'setup' => 'home#setup'
 
   controller :sessions do
     get 'login' => :new

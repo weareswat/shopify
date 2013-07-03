@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130627150957) do
+ActiveRecord::Schema.define(:version => 20130703160005) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "order_id"
@@ -25,8 +25,11 @@ ActiveRecord::Schema.define(:version => 20130627150957) do
     t.integer  "day"
     t.integer  "month"
     t.integer  "year"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.string   "vat_number"
+    t.integer  "client_id"
+    t.boolean  "sent_email",   :default => false
   end
 
   create_table "shops", :force => true do |t|
@@ -35,11 +38,14 @@ ActiveRecord::Schema.define(:version => 20130627150957) do
     t.string   "email"
     t.string   "invoice_user"
     t.string   "invoice_api"
-    t.boolean  "auto_send_email", :default => true
-    t.boolean  "auto_sequence",   :default => false
+    t.boolean  "auto_send_email",     :default => true
+    t.boolean  "auto_sequence",       :default => false
     t.string   "sequence_id"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.string   "vat_code_default"
+    t.string   "vat_code_inside_eu"
+    t.string   "vat_code_outside_eu"
   end
 
 end

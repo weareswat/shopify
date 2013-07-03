@@ -1,3 +1,4 @@
+%br
 %section#tables
   %header
     %h1 Invoices
@@ -15,9 +16,8 @@
         %tr
           %th Order no
           %th Created at
-          %th Payment Status
+          %th Client 
           %th Total
-          %th Ref. MB
           %th Action
       %tbody
       - @invoices.each do |invoice| 
@@ -25,21 +25,11 @@
           %td.primary
             = link_to invoice.order_number, "https://#{shop_session.url}/admin/orders/#{invoice.order_id}", :target => 'blank'
           %td
-            = invoice.created_at
+            = invoice.created_at.strftime("%d %b %Y")
           %td
-            %span.label{:class=>paymentStatus(payment)}
-              = payment.status
+            = invoice.email
           %td
-            = payment.value
-          %td
-            = payment.mb_reference
+            = "#{invoice.total} EUR" 
           %td
             .btn-group
-              %a.btn View
-              %a.btn.dropdown-toggle{"data-toggle" => "dropdown"}
-                %span.caret
-              %ul.dropdown-menu
-                %li
-                  = link_to 'Generate new MB Reference', generate_mb_reference_order_path(payment.order_id)
-                %li
-                  = link_to 'Check for payment', payment_verify_path(payment.id)
+              %a.btn.btn-success{:href=>"https://#{@shop.invoice_user}.invoicexpress.net/invoices/#{invoice.invoice_id}", :target=>'blank'} View

@@ -1,0 +1,51 @@
+%br
+%section#forms
+  .header
+    %h1 Setup
+
+  .row-fluid
+    .span12
+      = semantic_form_for @shop, :html => { :class=>'form-horizontal'} do |f| 
+        %ul#myTab.nav.nav-tabs
+          %li.active
+            %a{:href=>'#api', "data-toggle"=>"tab"} 
+              %i.icon-ok
+              InvoiceXpress API
+          %li
+            %a{:href=>'#options', "data-toggle"=>"tab"} Options
+          %li
+            %a{:href=>'#defaults', "data-toggle"=>"tab"} Advanced
+        .tab-content
+          #api.tab-pane.active
+            .row-fluid
+              .span8
+                = f.inputs do 
+                  = f.input :invoice_user, :required => true, :input_html => {:class=>'input-xlarge'}, :hint=>'Your InvoiceXpress username. Ex: xpto123'
+                  = f.input :invoice_api, :required => true, :input_html => {:class=>'input-xlarge'}, :hint=>'Your InvoiceXpress API Key. Ex: 00asdasdasdsasd1'
+              .span4
+                .well
+                  %h4 Where to obtain username
+                  = image_tag 'screen1.png'
+                  %p Copy the first part of your invoiceXpress url
+                .well
+                  %h4 Where to obtain your API Key
+                  = image_tag 'screen2.png'
+                  %p 1) In InvoiceXpress, go to 'Configurations'
+                  %p 2) Click on API
+                  %p 3) Click on Activate Token
+                  %p 4) Copy the API key
+
+          #options.tab-pane
+            = f.inputs  do 
+              = f.input :auto_send_email , :label=>'Automaticaly send e-mail to customer when invoice is created?'
+              = f.input :auto_sequence, :label=>'Use a custom sequence for all invoices created in Shopify?'
+              = f.input :sequence_id, :input_html => {:class=>'input-xlarge'}, :as=>:string
+          #defaults.tab-pane
+            = f.inputs  do 
+              = f.input :vat_code_default , :label=>'Default Vat Code', :hint=>'Override this if you need a specific isent VAT Code'
+              = f.input :vat_code_inside_eu, :label=>'VAT Code for inside EU', :hint=>'Override this if you use a different isent Vat code in the EU'
+              = f.input :vat_code_outside_eu, :label=>'VAT Code for outside EU',  :hint=>'Override this if you use a different isent Vat code outside the EU'
+ 
+        = f.actions do 
+          = f.action :submit, :as => :button, :label=>'Update', :button_html =>{:class=>'btn btn-primary', :disable_with => 'Wait...' }
+         
