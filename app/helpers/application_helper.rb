@@ -32,6 +32,17 @@ module ApplicationHelper
     status
   end
   
+  # fetch from metafields
+  def orderInvoiceId(order)
+    id=nil
+    if order.metafields && order.metafields.size>0
+      order.metafields.each do |meta|
+        id=meta.value if meta.key=="invoice_id" && meta.namespace=="invoicexpress"
+      end
+    end
+    id
+  end
+
   def orderFulfilmentStatus(order)
     status=""
     if !order.fulfillment_status 

@@ -3,8 +3,7 @@ class InvoicesController < ApplicationController
   around_filter :shopify_session
   before_filter :load_shop
 
-  #TODO
-  #add pagination, search?
+ 
   def index
     @invoices = Invoice.all   
   end
@@ -19,13 +18,13 @@ class InvoicesController < ApplicationController
         #fill general data
         #debugger
         @invoice=Invoice.new(
-          :store_url=>ShopifyAPI::Shop.current.domain, 
-          :order_id=>params[:order_id],
-          :shop_id=>@shop.id, 
+          :store_url=> ShopifyAPI::Shop.current.domain, 
+          :order_id=> order.id,
+          :shop_id=> @shop.id, 
           :order_number=> order.name,
           :total=>  order.total_price, 
           :email=>  order.email,
-          :name=> "#{order.billing_address.first_name} #{order.billing_address.last_name}"
+          :name=> "#{order.customer.first_name} #{order.customer.last_name}"
           )
       else
         redirect_to root_path, :notice=>'That order does not exist.'
@@ -45,9 +44,8 @@ class InvoicesController < ApplicationController
       @invoice = Invoice.new(params[:invoice])
       @invoice.create_invoicexpress()
       if @invoice.save
-        #lets create by now
-        #PayMailer.payment_information(@payment, @shop).deliver
-        redirect_to root_path, :notice=>'Created invoice'
+ 
+        redirect_to invoices_path, :notice=>'Created invoice'
       else
         render :new, :notice=>'There were problems with the form, please fill the missing information.'
       end
@@ -55,10 +53,24 @@ class InvoicesController < ApplicationController
       render :new, :alert=>'No params sent or shop is nil'
     end
   end
+  
+  def send_email
+    invoice   = Invoice.find(params[:id])
+
+    if @shop && invoice
+      if invoice.send_email
+        redirect_to invoices_path, :notice=>'Sent Invoice to '+invoice.email
+      else
+        redirect_to invoices_path, :alert=>'There were problems sending the e-mail. Please contact support.'
+      end
+    else
+      redirect_to invoices_path, :alert=>'No params sent or shop is nil'
+    end  
+  end
 
   private
     def load_shop
-      @shop    = Shop.where(:store_url=>ShopifyAPI::Shop.current.domain).first
+      @shop  = Shop.where(:store_url=>ShopifyAPI::Shop.current.domain).first
     end
 
 end

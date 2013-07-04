@@ -2,7 +2,7 @@ class Invoice < ActiveRecord::Base
   attr_accessible :day, :email, :invoice_id, :month, :name, :order_id, :shop_id, :store_url, :total, :year, :order_number
 
   validates_presence_of :shop_id, :store_url, :order_number, :invoice_id
-  #belongs_to :shop
+  belongs_to :shop
 
   #before_create :create_invoice
 
@@ -10,13 +10,14 @@ class Invoice < ActiveRecord::Base
   def create_invoicexpress()
     @client = get_invoicexpress_client()
     order   = ShopifyAPI::Order.find(self.order_id)
-    shop    = ShopifyAPI::Shop.current
+    store   = ShopifyAPI::Shop.current
     date    = get_ix_date(order.created_at)
-
+    state   = Invoicexpress::Models::InvoiceState.new(:state => "finalized")
+    
     #items leave it like this for now for debugging issues
     items=[]
-    line_items      = get_line_items(order, shop.taxes_included)
-    shipping_items  = get_shipping(order, shop.taxes_included, shop.tax_shipping)
+    line_items      = get_line_items(order, store.taxes_included)
+    shipping_items  = get_shipping(order, store.taxes_included, store.tax_shipping)
     items           = line_items+shipping_items
     
     new_invoice = Invoicexpress::Models::Invoice.new(
@@ -24,26 +25,85 @@ class Invoice < ActiveRecord::Base
       :due_date     => date,
       :reference    => order.name,
       :observations => order.note,
-      :tax_exemption=> get_tax_exemption(order, shop.tax_shipping),
-      :sequence_id  => 266500,
-      :client       => get_client(order.customer),
+      :tax_exemption=> get_tax_exemption(order, store.tax_shipping),
+      # :sequence_id  => 266500,
+      :client       => @client.client_by_code(order.customer.id)||get_client(order.customer),
       :items        => items
     )
     new_invoice = @client.create_invoice(new_invoice)
     self.invoice_id=new_invoice.id
+    
+    if should_finalize_invoice?(order, new_invoice)
+      @client.update_invoice_state(new_invoice.id, invoice_state)
+    end
+    
+    add_metafield(order)
+
+    return self.invoice_id
+  end
+  
+  def send_email
+    @client = get_invoicexpress_client()
+    invoice       = nil
+
+    if self.invoice_id
+      invoice = @client.invoice(self.invoice_id)
+      message = Invoicexpress::Models::Message.new(
+        :client => invoice.client,
+        :subject => "Your invoice for order #{self.order_number}",
+        :body => "Attached to this email is your invoice."
+      )
+      @client.invoice_email(self.invoice_id, message)
+      return true
+    else
+      return false
+    end
+  end
+  
+  # returns true or false if the invoice is valid for passing final state 
+  def should_finalize_invoice?(order, invoicexpress_invoice)
+    nif_is_valid  = false
+     
+    if invoicexpress_invoice.client && invoicexpress_invoice.client.fiscal_id
+      nif_is_valid= validate_fiscal_id(invoicexpress_invoice.client.fiscal_id)
+    elsif order.note_attributes && order.note_attributes.size>0
+      order.note_attributes.each do |attr|
+        nif_is_valid= validate_fiscal_id(attr.value) if attr.name == "nif"
+      end
+    end
+    nif_is_valid
   end
 
+
   private
+    # gets client for invoicexpress
     def get_invoicexpress_client()
-      #TODO
-      #get params from store
       Invoicexpress::Client.new(
-        :screen_name => "thinkorangeteste",
-        :api_key     => "85635b50ef504e64144d2a666f248c7ff96403f1",
-        :proxy       => "http://127.0.0.1:9999"
+        :screen_name => self.shop.invoice_user,
+        :api_key     => self.shop.invoice_api
+        #        :proxy       => "http://127.0.0.1:9999"
       )
     end
 
+    # returns true if the fiscal_id is valid
+    def validate_fiscal_id(fiscal_id)
+      return Valvat.new(fiscal_id).valid?
+    end
+
+    # adds a metafield with the invoice id to the order
+    def add_metafield(order)
+      order.add_metafield(
+        ShopifyAPI::Metafield.new({
+           :description => "InvoiceXpress id",
+           :namespace => 'invoicexpress',
+           :key => "invoice_id",
+           :value => self.invoice_id,
+           :value_type => 'integer'
+        })
+      )
+    end
+
+    # returns an array with Invoicexpress::Models::Item for each line item
     def get_line_items(order, taxes_included=nil)
       items=[]
       if order.line_items != nil
@@ -63,7 +123,8 @@ class Invoice < ActiveRecord::Base
       end
       items
     end
-    
+
+    # returns an array with Invoicexpress::Models::Item for each shipping item
     def get_shipping(order, taxes_included=false, tax_shipping=false)
       items=[]
       if order.shipping_lines != nil
@@ -86,6 +147,7 @@ class Invoice < ActiveRecord::Base
       items
     end
 
+    # returns a Invoicexpress::Models::Tax model for the corresponding shopify tax
     def get_tax(tax_value)
       return nil if tax_value.nil? 
       tax_full=tax_value*100
@@ -95,7 +157,7 @@ class Invoice < ActiveRecord::Base
       end
     end
 
-    # Tax = (Tax Rate * Price) / (1 + Tax Rate)
+    # retuns price for a item, if tax is included then formula for tax is Tax = (Tax Rate * Price) / (1 + Tax Rate)
     def get_price(price, taxes_included=false, tax_lines=[])
       if taxes_included==false
         return price

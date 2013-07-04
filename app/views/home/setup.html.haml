@@ -9,19 +9,19 @@
         %ul#myTab.nav.nav-tabs
           %li.active
             %a{:href=>'#api', "data-toggle"=>"tab"} 
-              %i.icon-ok
               InvoiceXpress API
-          %li
-            %a{:href=>'#options', "data-toggle"=>"tab"} Options
-          %li
-            %a{:href=>'#defaults', "data-toggle"=>"tab"} Advanced
+          / %li
+          /   %a{:href=>'#options', "data-toggle"=>"tab"} Options
+          / %li
+          /   %a{:href=>'#defaults', "data-toggle"=>"tab"} Advanced
         .tab-content
           #api.tab-pane.active
             .row-fluid
               .span8
                 = f.inputs do 
-                  = f.input :invoice_user, :required => true, :input_html => {:class=>'input-xlarge'}, :hint=>'Your InvoiceXpress username. Ex: xpto123'
+                  = f.input :invoice_user, :required => true, :input_html => {:class=>'input-xlarge'}, :hint=>'This is the Sub-domain part of your homepage url, Ex: http://SUBDOMAIN.invoicexpress.net'
                   = f.input :invoice_api, :required => true, :input_html => {:class=>'input-xlarge'}, :hint=>'Your InvoiceXpress API Key. Ex: 00asdasdasdsasd1'
+                  = f.input :auto_send_email , :label=>'Automaticaly send e-mail to customer when invoice is created?'
               .span4
                 .well
                   %h4 Where to obtain username
@@ -35,17 +35,17 @@
                   %p 3) Click on Activate Token
                   %p 4) Copy the API key
 
-          #options.tab-pane
-            = f.inputs  do 
-              = f.input :auto_send_email , :label=>'Automaticaly send e-mail to customer when invoice is created?'
-              = f.input :auto_sequence, :label=>'Use a custom sequence for all invoices created in Shopify?'
-              = f.input :sequence_id, :input_html => {:class=>'input-xlarge'}, :as=>:string
-          #defaults.tab-pane
-            = f.inputs  do 
-              = f.input :vat_code_default , :label=>'Default Vat Code', :hint=>'Override this if you need a specific isent VAT Code'
-              = f.input :vat_code_inside_eu, :label=>'VAT Code for inside EU', :hint=>'Override this if you use a different isent Vat code in the EU'
-              = f.input :vat_code_outside_eu, :label=>'VAT Code for outside EU',  :hint=>'Override this if you use a different isent Vat code outside the EU'
+          / #options.tab-pane
+          /   = f.inputs  do 
+          /     = f.input :auto_send_email , :label=>'Automaticaly send e-mail to customer when invoice is created?'
+          /     = f.input :auto_sequence, :label=>'Use a custom sequence for all invoices created in Shopify?'
+          /     = f.input :sequence_id, :input_html => {:class=>'input-xlarge'}, :as=>:string
+          / #defaults.tab-pane
+          /   = f.inputs  do 
+          /     = f.input :vat_code_default , :label=>'Default Vat Code', :hint=>'Override this if you need a specific isent VAT Code'
+          /     = f.input :vat_code_inside_eu, :label=>'VAT Code for inside EU', :hint=>'Override this if you use a different isent Vat code in the EU'
+          /     = f.input :vat_code_outside_eu, :label=>'VAT Code for outside EU',  :hint=>'Override this if you use a different isent Vat code outside the EU'
  
         = f.actions do 
-          = f.action :submit, :as => :button, :label=>'Update', :button_html =>{:class=>'btn btn-primary', :disable_with => 'Wait...' }
+          = f.action :submit, :as => :button, :label=>'Update', :button_html =>{:class=>'btn btn-large btn-success', :disable_with => 'Wait...' }
          

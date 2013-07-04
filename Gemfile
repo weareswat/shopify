@@ -30,6 +30,8 @@ gem 'invoicexpress', :path => "vendor/gems/invoicexpress"
 gem 'haml-rails'
 gem 'pry'
 
+gem 'debugger'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

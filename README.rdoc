@@ -13,6 +13,11 @@ oranges*
 front:
 whewya
 
+=== InvoiceXpress
+
+thinkorangeteste
+85635b50ef504e64144d2a666f248c7ff96403f1
+
 === Payment
 
 You can make test orders by using the following credentials:
@@ -22,3 +27,11 @@ Expiration Date
 [some time in the future]
 Card security code
 123
+
+=== test webhooks
+
+1) download pagekite
+curl -s https://pagekite.net/pk/ |sudo bash
+
+2) use pagekite
+pagekite.py 3000 thinkorange.pagekite.me
