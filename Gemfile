@@ -2,10 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem 'sqlite3'
+gem "json", "~> 1.8.0"
 gem 'shopify_app', '4.1.1'
 
 gem 'jquery-rails'
@@ -13,7 +10,6 @@ gem 'less-rails-bootstrap'
 gem "font-awesome-rails"
 gem 'formtastic'
 gem 'formtastic-bootstrap'  
-
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 
@@ -29,11 +25,20 @@ group :assets do
 end
 
 gem 'valvat'
-gem 'invoicexpress', :path => "vendor/gems/invoicexpress_temp"
 gem 'haml-rails'
+
+gem 'invoicexpress', :path => "vendor/gems/invoicexpress_temp"
 gem 'pry'
 
-gem 'debugger'
+group :production do 
+  gem 'pg'
+end
+
+group :development do
+  #gem 'thin'
+  gem 'debugger'
+  gem 'sqlite3'
+end
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

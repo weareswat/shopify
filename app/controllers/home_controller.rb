@@ -26,24 +26,19 @@ class HomeController < ApplicationController
       @shop = Shop.new(:name => ShopifyAPI::Shop.current.name, :store_url => ShopifyAPI::Shop.current.domain)
       @shop.save
       session[:shop] = @shop.name
+      init_webhooks
       redirect_to setup_path()
     end
-    #init_webhooks
   end
   
   def init_webhooks
-    #ex: "products/update", "products/delete"
-    topics = ["orders/paid"]
-    topics.each do |topic|
-     webhook = ShopifyAPI::Webhook.create(:format => "json", :topic => topic, :address => "http://#{DOMAIN_NAMES[RAILS_ENV]}/webhooks/#{topic}")
-     raise "Webhook invalid: #{webhook.errors}" unless webhook.valid?
-    end
+    #change this in production!
+    #address=""
+    address="https://thinkorange.pagekite.me/webhooks"
     
-    #change this in prod
-    address="https://thinkorange.pagekite.me"
-    
-    webhook = ShopifyAPI::Webhook.create(:format => "json",  :topic => "webhooks/create", :address => address)
+    webhook = ShopifyAPI::Webhook.create(:format => "json",  :topic => "orders/paid", :address => address)
     if webhook.valid?
+      #debugger
       logger.debug("oh Webhook invalid: #{webhook.errors}")
     else
       logger.debug('Created webhook')
