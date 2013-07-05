@@ -38,3 +38,5 @@
               %ul.dropdown-menu
                 %li
                   = link_to 'Send Invoice by E-mail', send_email_invoice_path(invoice.id), :method=>:post, :confirm=>'This will finalize the invoice. Are you sure?'
+
+  = paginate @invoices, :theme=>'twitter-bootstrap'

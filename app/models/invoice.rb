@@ -4,6 +4,8 @@ class Invoice < ActiveRecord::Base
   validates_presence_of :shop_id, :store_url, :order_number, :invoice_id
   belongs_to :shop
 
+  paginates_per 10
+
   #before_create :create_invoice
 
   #created invoice via invoicexpress
