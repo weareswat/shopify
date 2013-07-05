@@ -1,5 +1,5 @@
 PATH
-  remote: vendor/gems/invoicexpress
+  remote: vendor/gems/invoicexpress_temp
   specs:
     invoicexpress (0.0.0)
       faraday (~> 0.8)

@@ -26,7 +26,7 @@ group :assets do
 end
 
 gem 'valvat'
-gem 'invoicexpress', :path => "vendor/gems/invoicexpress"
+gem 'invoicexpress', :path => "vendor/gems/invoicexpress_temp"
 gem 'haml-rails'
 gem 'pry'
 
