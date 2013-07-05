@@ -3,7 +3,7 @@ class Shop < ActiveRecord::Base
   
   #validates_presence_of :invoice_user, :invoice_api
   def invoicexpress_ready?
-    if invoice_api.empty? || invoice_user.empty?
+    if invoice_api.nil? || invoice_user.nil? || invoice_api.empty? || invoice_user.empty?
       false
     else
       true

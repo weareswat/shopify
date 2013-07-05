@@ -1,0 +1,66 @@
+%br
+%section#help
+  %header
+    %h1 Help
+  
+  .row-fluid
+    .span4
+      .sidebar-nav
+        .well{:style => "width:300px; padding: 8px 0;"}
+          %ul.nav.nav-list
+            %li.nav-header Index
+            %li
+              %a{:href => "#1"}  What does this app do?
+            %li
+              %a{:href => "#2"} What happens when a order is paid?
+            %li
+              %a{:href => "#3"} What happens when there is no VAT Number? 
+            %li
+              %a{:href => "#4"} How can I add a VAT Number field to my order?
+            %li
+              %a{:href => "#5"} Does this app support discounts?
+            %li
+              %a{:href => "#6"} Does this app support other currencies in my shop?
+            %li
+              %a{:href => "#7"} Why does my invoice have a difference in cents compared to Shopify?
+            %li
+              %a{:href => "#8"} How can I suggest new features or report bugs?
+
+    .span8
+      %article#1
+        %h2 What does this app do?
+        %p This app connects your Shopify Store to InvoiceXpress in order to send out invoices automaticaly when an order gets paid. You can also create a invoice manually from a recent order.
+        %hr
+      %article#2
+        %h2 What happens when a order is paid?
+        %p We send out the information to your InvoiceXpress account and create an invoice. If the Invoice has no taxes we apply a VAT isent code. If the client does not exist in InvoiceXpress with that name, we create one. If there is no product in InvoiceXpress matching the description of your product then we create one as well.
+        %hr
+      %article#3
+        %h2 What happens when there is no VAT Number? 
+        %p We don't set the invoice to Final state. We still send the invoice through mail.
+        %hr
+      %article#4
+        %h2 How can I add a VAT Number field to my order?
+        %p The only way to do this is to manually add the code to your theme's Cart Page Template. That way, before the checkout, your customers can add their fiscal number if they wish to be added to the invoice.
+        %p 1) On your Shopify Admin area, click on Themes in the sidebar.
+        %p 2) Choose Template Editor and select the cart.liquid from the list of files.
+        %p 3) Add the following code before the part that says "{% if settings.show_cart_notes %}"
+        = render :partial=>'snippet'
+        %hr
+      %article#5
+        %h2 Does this app support discounts?
+        %p No. InvoiceXpress only accepts discount percentage per item, after tax has been applied. Shopify sends the discount information as a total amount and not a percentage. As a result, the only way to bypass this situation is to create a Credit Note after the invoice is sent.
+        %p However, this may not be the ideal situation for everyone so we're looking into getting a more perfect solution.
+        %hr
+      %article#6
+        %h2 Does this app support other currencies in my shop?
+        %p The store currency must be in Euro, otherwise the values will pass on to the invoice directly. This is a limitation of the API we're looking to improve.
+        %hr
+      %article#7
+        %h2 Why does my invoice have a difference in cents compared to Shopify?
+        %p There seems to be a difference in the way taxes are calculated in Shopify but *only* when the taxes are included in the prices.
+        %hr
+      %article#8
+        %h2 How can I suggest new features or report bugs?
+        %p Please send a support e-mail to support@invoicexpress.net, we'll be happy to help you any way we can.
+        %hr

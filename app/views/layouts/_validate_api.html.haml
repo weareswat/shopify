@@ -1,4 +1,4 @@
-- if @shop && !@shop.invoicexpress_ready?
+- if !@shop.nil? && !@shop.invoicexpress_ready?
   %br
   .alert.alert-block
     %h4
