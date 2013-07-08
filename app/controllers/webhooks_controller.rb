@@ -14,6 +14,27 @@ class WebhooksController < ApplicationController
   end
 
   private
+  def send_to_invoicexpress(shop, order)
+    invoice=Invoice.new(
+            :store_url=>    shop.store_url, 
+            :order_id=>     order.id,
+            :shop_id=>      shop.id, 
+            :order_number=> order.name,
+            :total=>        order.total_price, 
+            :email=>        order.email,
+            :name=>         "#{order.customer.first_name} #{order.customer.last_name}"
+    )
+    invoice.create_invoicexpress()
+    if invoice.save
+      if shop.auto_send_email
+        invoice.send_email
+      end
+      true
+    else
+      false
+    end
+  end
+
   def verify_webhook
     data = request.body.read.to_s
     hmac_header = request.headers['HTTP_X_SHOPIFY_HMAC_SHA256']

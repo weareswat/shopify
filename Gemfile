@@ -36,7 +36,7 @@ end
 
 group :development do
   #gem 'thin'
-  gem 'debugger'
+  #gem 'debugger'
   gem 'sqlite3'
 end
 
