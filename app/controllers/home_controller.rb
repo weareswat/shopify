@@ -26,7 +26,7 @@ class HomeController < ApplicationController
       @shop = Shop.new(:name => ShopifyAPI::Shop.current.name, :store_url => ShopifyAPI::Shop.current.domain)
       @shop.save
       session[:shop] = @shop.name
-      init_webhooks
+      #init_webhooks
       redirect_to setup_path()
     end
   end
