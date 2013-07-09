@@ -19,6 +19,7 @@ class HomeController < ApplicationController
 
   private
   def init_shop
+    #debugger
     if Shop.where(:name => ShopifyAPI::Shop.current.name).exists?
       @shop=Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
       if session["shopify"] && session["shopify"].token != @shop.token
@@ -30,8 +31,10 @@ class HomeController < ApplicationController
       @shop = Shop.new(:name => ShopifyAPI::Shop.current.name, :store_url => ShopifyAPI::Shop.current.domain)
       @shop.token=session["shopify"].token if session["shopify"] && session["shopify"].token != @shop.token
       @shop.email=ShopifyAPI::Shop.current.email
+      @shop.store_id=ShopifyAPI::Shop.current.id
       @shop.save
       init_webhooks
+      session[:shop] = @shop.name
       redirect_to setup_path()
     end
   end
@@ -39,7 +42,11 @@ class HomeController < ApplicationController
   def init_webhooks
     #change this in production!
     #address=""
-    address="https://thinkorange.pagekite.me/webhooks"
+    if Rails.env.development?
+      address="https://thinkorange.pagekite.me/webhooks"
+    else
+      address="http://shopinvoicexpress.herokuapp.com/webhooks"
+    end  
     
     webhook = ShopifyAPI::Webhook.create(:format => "json",  :topic => "orders/paid", :address => address)
     if webhook.valid?

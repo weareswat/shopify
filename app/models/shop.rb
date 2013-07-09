@@ -1,5 +1,5 @@
 class Shop < ActiveRecord::Base
-  attr_accessible :email, :invoice_api, :invoice_user, :name, :store_url, :auto_send_email, :auto_sequence, :sequence_id, :vat_code_default, :vat_code_inside_eu, :vat_code_outside_eu
+  attr_accessible :email, :invoice_api, :invoice_user, :name, :store_url, :auto_send_email, :auto_sequence, :sequence_id, :vat_code_default, :vat_code_inside_eu, :vat_code_outside_eu, :store_id, :token
   
   #validates_presence_of :invoice_user, :invoice_api
   def invoicexpress_ready?

@@ -177,7 +177,7 @@ class Invoice < ActiveRecord::Base
     # gets tax_exemption if appliable
     def get_tax_exemption(order, tax_shipping)
       tax_exemption=nil
-      if order.tax_lines==nil
+      if order.tax_lines==nil || order.tax_lines.empty?
         #tax exemption for normal cases
         tax_exemption="M10"
       elsif order.tax_lines!=nil && tax_shipping==false

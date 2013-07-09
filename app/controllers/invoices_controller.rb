@@ -5,7 +5,7 @@ class InvoicesController < ApplicationController
 
  
   def index
-    @invoices = Invoice.order(:created_at).page params[:page]
+    @invoices = Invoice.order("created_at DESC").page params[:page]
   end
 
   def new
@@ -44,7 +44,6 @@ class InvoicesController < ApplicationController
       @invoice = Invoice.new(params[:invoice])
       @invoice.create_invoicexpress()
       if @invoice.save
- 
         redirect_to invoices_path, :notice=>'Created invoice'
       else
         render :new, :notice=>'There were problems with the form, please fill the missing information.'
