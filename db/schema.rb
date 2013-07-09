@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130703160005) do
+ActiveRecord::Schema.define(:version => 20130706005033) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "order_id"
@@ -46,6 +46,8 @@ ActiveRecord::Schema.define(:version => 20130703160005) do
     t.string   "vat_code_default"
     t.string   "vat_code_inside_eu"
     t.string   "vat_code_outside_eu"
+    t.integer  "store_id"
+    t.string   "token"
   end
 
 end

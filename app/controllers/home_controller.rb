@@ -21,11 +21,16 @@ class HomeController < ApplicationController
   def init_shop
     if Shop.where(:name => ShopifyAPI::Shop.current.name).exists?
       @shop=Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
-      session[:shop]=@shop.name
+      if session["shopify"] && session["shopify"].token != @shop.token
+        @shop.name=session[:shop]
+        @shop.token=session["shopify"].token
+        @shop.save
+      end
     else
       @shop = Shop.new(:name => ShopifyAPI::Shop.current.name, :store_url => ShopifyAPI::Shop.current.domain)
+      @shop.token=session["shopify"].token if session["shopify"] && session["shopify"].token != @shop.token
+      @shop.email=ShopifyAPI::Shop.current.email
       @shop.save
-      session[:shop] = @shop.name
       init_webhooks
       redirect_to setup_path()
     end
