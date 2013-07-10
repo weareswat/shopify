@@ -29,14 +29,15 @@ gem 'haml-rails'
 
 gem 'invoicexpress', :path => "vendor/gems/invoicexpress_temp"
 gem 'pry'
+gem 'sentry-raven'
 
 group :production do 
   gem 'pg'
 end
 
 group :development do
-  #gem 'thin'
-  #gem 'debugger'
+  gem 'thin'
+  gem 'debugger'
   gem 'sqlite3'
 end
 

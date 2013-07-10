@@ -10,7 +10,7 @@
           %ul.nav.nav-list
             %li.nav-header Index
             %li
-              %a{:href => "#1"}  What does this app do?
+              %a{:href => "#1"} What does this app do?
             %li
               %a{:href => "#2"} What happens when a order is paid?
             %li
@@ -21,6 +21,8 @@
               %a{:href => "#5"} Does this app support discounts?
             %li
               %a{:href => "#6"} Does this app support other currencies in my shop?
+            %li
+              %a{:href => "#61"} Does this app support taxes?
             %li
               %a{:href => "#7"} Why does my invoice have a difference in cents compared to Shopify?
             %li
@@ -55,6 +57,11 @@
       %article#6
         %h2 Does this app support other currencies in my shop?
         %p The store currency must be in Euro, otherwise the values will pass on to the invoice directly. This is a limitation of the API we're looking to improve.
+        %hr
+      %article#61
+        %h2 Does this app support taxes?
+        %p Yes. If an order has taxes, then it will try to match the tax value in Shopify with Taxes created in InvoiceXpress (under settings -> tax). If a Tax does not exist, it will be created automaticaly using the value from Shopify. 
+        %p If an order does not have taxes then it's required to give a reason for exemption, we're using the code M08 (IVA – Autoliquidação).
         %hr
       %article#7
         %h2 Why does my invoice have a difference in cents compared to Shopify?

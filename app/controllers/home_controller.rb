@@ -47,7 +47,7 @@ class HomeController < ApplicationController
     else
       address="http://shopinvoicexpress.herokuapp.com/webhooks"
     end  
-    
+
     webhook = ShopifyAPI::Webhook.create(:format => "json",  :topic => "orders/paid", :address => address)
     if webhook.valid?
       #debugger

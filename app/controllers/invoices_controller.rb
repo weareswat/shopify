@@ -5,7 +5,7 @@ class InvoicesController < ApplicationController
 
  
   def index
-    @invoices = Invoice.order("created_at DESC").page params[:page]
+    @invoices = @shop.invoices.order("created_at DESC").page params[:page]
   end
 
   def new

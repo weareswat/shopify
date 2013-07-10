@@ -45,3 +45,8 @@ curl -s https://pagekite.net/pk/ |sudo bash
 
 2) use pagekite
 pagekite.py 3000 thinkorange.pagekite.me
+
+=== Heroku logs
+
+heroku addons:open papertrail
+

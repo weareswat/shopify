@@ -29,12 +29,16 @@ class Invoice < ActiveRecord::Base
       :observations => order.note,
       :tax_exemption=> get_tax_exemption(order, store.tax_shipping),
       # :sequence_id  => 266500,
-      :client       => @client.client_by_code(order.customer.id)||get_client(order.customer),
+      :client       => @client.client_by_code(order.customer.id)||get_client(order.customer, order.note_attributes),
       :items        => items
     )
-    new_invoice = @client.create_invoice(new_invoice)
-    self.invoice_id=new_invoice.id
-    
+    #debugger
+    new_invoice     = @client.create_invoice(new_invoice)
+    self.invoice_id = new_invoice.id
+    self.year       = date.year
+    self.month      = date.month
+    self.day        = date.day
+
     if should_finalize_invoice?(order, new_invoice)
       @client.update_invoice_state(new_invoice.id, invoice_state)
     end
@@ -68,10 +72,10 @@ class Invoice < ActiveRecord::Base
      
     if invoicexpress_invoice.client && invoicexpress_invoice.client.fiscal_id
       nif_is_valid= validate_fiscal_id(invoicexpress_invoice.client.fiscal_id)
-    elsif order.note_attributes && order.note_attributes.size>0
-      order.note_attributes.each do |attr|
-        nif_is_valid= validate_fiscal_id(attr.value) if attr.name == "nif"
-      end
+    # elsif order.note_attributes && order.note_attributes.size>0
+    #   order.note_attributes.each do |attr|
+    #     nif_is_valid= validate_fiscal_id(attr.value) if attr.name == "nif"
+    #   end
     end
     nif_is_valid
   end
@@ -152,11 +156,25 @@ class Invoice < ActiveRecord::Base
     # returns a Invoicexpress::Models::Tax model for the corresponding shopify tax
     def get_tax(tax_value)
       return nil if tax_value.nil? 
-      tax_full=tax_value*100
-      taxes= @client.taxes
+      tax_full = tax_value*100
+      taxes    = @client.taxes
+      ix_tax   = nil
+
       taxes.each do |tax|
-        return tax if tax.value==tax_full
+        ix_tax=tax if tax.value==tax_full
       end
+      
+      if ix_tax.nil?
+        model_tax = Invoicexpress::Models::Tax.new({
+        :name        => "VAT#{tax_full.round}",
+        :value       => tax_full,
+        :region      => "Desconhecido",
+        :default_tax => 0
+        })
+        ix_tax = @client.create_tax(model_tax)
+      end
+
+      return ix_tax
     end
 
     # retuns price for a item, if tax is included then formula for tax is Tax = (Tax Rate * Price) / (1 + Tax Rate)
@@ -179,10 +197,10 @@ class Invoice < ActiveRecord::Base
       tax_exemption=nil
       if order.tax_lines==nil || order.tax_lines.empty?
         #tax exemption for normal cases
-        tax_exemption="M10"
-      elsif order.tax_lines!=nil && tax_shipping==false
+        tax_exemption="M08"
+      elsif order.tax_lines!=nil && (tax_shipping==nil || tax_shipping==false)
         #tax exemption for shipping
-        tax_exemption="M11"
+        tax_exemption="M08"
       end
       tax_exemption
     end
@@ -193,7 +211,7 @@ class Invoice < ActiveRecord::Base
       Date.new(date.year, date.month, date.day)
     end
 
-    def get_client(customer, fiscal_id=nil)
+    def get_client(customer, note_attributes=nil)
       if customer!=nil
         client= Invoicexpress::Models::Client.new(
           :name => "#{customer.first_name} #{customer.last_name}",
@@ -204,9 +222,26 @@ class Invoice < ActiveRecord::Base
         #falta o fiscal_id
         if customer.default_address!=nil
           #client.country    = order.customer.default_address.country
-          client.address    = "#{customer.default_address.address1} #{customer.default_address.address2} #{customer.default_address.city}"
+          client.address    = "#{customer.default_address.address1}" #" #{customer.default_address.address2} #{customer.default_address.city}"
+          if customer.default_address.address2
+            client.address+=" #{customer.default_address.address2}"
+          end
+          if customer.default_address.city
+            client.address+=" #{customer.default_address.city}"
+          end
           client.postal_code= customer.default_address.zip
           client.phone      = customer.default_address.phone
+        end
+
+        if note_attributes && note_attributes.size>0
+          note_attributes.each do |attr|
+            if attr.name == "vat_number" 
+              if Valvat.new(attr.value).valid?
+                client.fiscal_id = Valvat::Utils.split(attr.value).last
+                # client.fiscal_id = attr.value
+              end
+            end
+          end
         end
         client
       else
