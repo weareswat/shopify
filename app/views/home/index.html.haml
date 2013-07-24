@@ -2,17 +2,19 @@
 
 %section#tables
   %header
+    .pull-right
+      %a.btn{ :href=> "#", :id=>'tourhome'} Tour
     %h1 Recent Orders
-  
+
   -if @orders.blank?
     .row-fluid
       .span12
         .alert.alert-block
-          %h4.alert-heading Oops
-          %p There are no orders in your store yet.
+          %h4.alert-heading Welcome
+          %p Your store doesn't have any orders.
   
   -else
-    %table.table.full-section.table-hover
+    %table#orders_table.table.full-section.table-hover
       %thead
         %tr
           %th Order

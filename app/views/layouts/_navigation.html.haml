@@ -11,17 +11,17 @@
         .nav-collapse
           %ul.nav
             %li{:class=>"#{active_nav_class('invoices')}"}
-              =link_to 'Invoices', invoices_path
+              =link_to 'Invoices', invoices_path, :id=>'menu_invoices'
             %li{:class=>"#{active_nav_class('home', 'setup')}"}
-              =link_to 'Setup', '/setup'
+              =link_to 'Setup', '/setup', :id=>'menu_setup'
             %li{:class=>"#{active_nav_class('home', 'help')}"}
-              =link_to 'Help', '/help'
+              =link_to 'Help', '/help', :id=>'menu_help'
             /%li{:class=>"#{active_nav_class('home', 'change_language')}"}
             /  =link_to image_tag('en_flag.png', :alt=>'English'), '#'
             /%li{:class=>"#{active_nav_class('home', 'change_language')}"}
             /  =link_to image_tag('pt_flag.png', :alt=>'Português'), '#'
 
-        %ul.nav.pull-right
+        %ul#menu_settings.nav.pull-right
           %li.dropdown
             = link_to raw(shop_session.url+' <b class="caret"></b>'), "https://#{shop_session.url}", :class => 'shop_name dropdown-toggle', :'data-toggle' => 'dropdown', :'data-target' => '#'
             %ul.dropdown-menu

@@ -11,6 +11,7 @@ class HomeController < ApplicationController
     init_shop
     # get latest 5 orders
     @orders   = ShopifyAPI::Order.find(:all, :params => {:limit => 5, :order => "created_at DESC" })
+    #@orders   = nil
   end
 
   def setup

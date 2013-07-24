@@ -1360,6 +1360,7 @@ select:focus:invalid:focus {
 .help-block {
   display: block;
   margin-bottom: 12.5px;
+  font-size:0.9em;
 }
 .help-inline {
   display: inline-block;

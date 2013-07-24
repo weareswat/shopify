@@ -8,5 +8,6 @@
  *= require formtastic-bootstrap
  *= require metro-bootstrap
  *= require font-awesome
+ *= require bootstrap-tour
  *= require shopify_app
 */
