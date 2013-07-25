@@ -1,7 +1,7 @@
 Invoicexpress::Application.routes.draw do
   
   match 'welcome' => 'home#welcome'
-  match 'design' => 'home#design'
+  match 'debug' => 'home#debug'
   match 'setup' => 'home#setup'
   match 'help' => 'help#index'
 

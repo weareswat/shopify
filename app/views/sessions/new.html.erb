@@ -1,18 +1,29 @@
-<div class="page-header" id="login-header">
-  <h1>Install this app on your shop</h1>
-  <h1><small>Please login to start using it.</small></h1>
+<!-- <div class="page-header" id="login-header">
+  <h1>InvoiceXpress Shopify Plugin</h1>
 </div>
-
-<div style="width:340px; margin:0 auto;">
-  <%= form_tag login_path, :class => 'form-search' do %>
-    <%= text_field_tag 'shop', nil, :placeholder => 'Shop URL ex: test.myshopify.com', :class => 'btn-large'  %> 
-    <%= submit_tag 'Install', :class => 'btn btn-success btn-large' %>
-  <% end %>
+ -->
+ <br>
+ <br>
+ <br>
+ <div class="row-fluid">
+  <div class="span5">
+    <h2>Login or Install on your shop</h2>
+    <p class="muted">Use your Shopify store url to login or install the app.</p>
+    <%= form_tag login_path, :class => 'form-search' do %>
+      <%= text_field_tag 'shop', nil, :placeholder => 'ex: test.myshopify.com', :class => 'btn'  %> 
+      <%= submit_tag 'Submit', :class => 'btn btn-success  ' %>
+    <% end %>
 </div>
-
-<p align="center" style="margin-top:30px">
-  <%= image_tag 'shopify.png' %>
-</p>
+<div class="span2">
+	<p align="center" style="margin-top:30px">
+	 <%= image_tag 'shopify.png' %>
+	</p>
+</div>
+<div class="span5">
+  <h2>What is InvoiceXpress?</h2>
+  <p class="muted"><a href="http://www.invoicexpress.net">InvoiceXpress</a> let's you invoice your customers from Shopify when a order gets paid.</p>
+  <p class="muted">You need a <a href="http://www.invoicexpress.net">InvoiceXpress</a> account and a <a href="http://www.shopify.com">Shopify Store</a> to install the app.</p>
+</div>
+</div>
 <br/>
-<p align="center" class="muted"><a href="http://www.invoicexpress.net">InvoiceXpress</a> let's you invoice your customers from Shopify when a order gets paid.</p>
  

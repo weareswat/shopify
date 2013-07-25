@@ -1,0 +1,38 @@
+%br
+%section#tables
+  %header
+    %h1 Webhooks
+  
+  %ul
+  - @hooks.each do |hook| 
+    %li= hook.address
+    %li= hook.topic
+
+
+  -if @webhooks.blank?
+    .row-fluid
+      .span12
+        .alert.alert-block
+          %h2.alert-heading Nothing to see here.
+  
+  -else
+    %table.table.full-section.table-hover
+      %thead
+        %tr
+          %th Order no
+          %th Created at
+          %th Invoice id
+          %th Params
+      %tbody
+      - @webhooks.each do |webhook| 
+        %tr
+          %td.primary
+            = link_to webhook.order_id, "https://#{shop_session.url}/admin/orders/#{webhook.order_id}", :target => 'blank'
+          %td
+            = webhook.created_at.strftime("%d %b %Y: %Hh %Mm")
+          %td
+            = webhook.invoice_id
+          %td
+            =  webhook.params
+
+  = paginate @webhooks, :theme=>'twitter-bootstrap'

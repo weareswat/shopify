@@ -3,7 +3,8 @@ jQuery ->
   #$("a[rel=popover]").popover()
   #$(".tooltip").tooltip()
   #$("a[rel=tooltip]").tooltip()
-  
+   
+
   $('.dropdown-toggle').dropdown()
   $('#showme1').on 'click', ->
     $("#how1").toggle('fast')
@@ -16,6 +17,46 @@ jQuery ->
   $('.close').on 'click', ->
     $(this).parent().parent().toggle('fast')
     false
+
+  $('#toursetup').bind 'click', ->
+    tour = new Tour(
+      name: "toursetup"
+      storage: localStorage
+      debug: false
+      backdrop: false
+      animation: true
+    )
+    tour.addSteps [
+      element: "#shop_invoice_user" 
+      title: "Username"
+      content: "This is your Your InvoiceXpress Username. Click on Show for more information."
+      placement: "bottom"
+    ,
+      element: "#shop_invoice_api"
+      title: "API Key"
+      content: "We need your API key from your InvoiceXpress account to send information. Click on Show for more information."
+      placement: "bottom"
+    ,
+      element: "#shop_finalize_invoice"
+      title: "Finalize Invoice"
+      content: "By default all invoices are set to Finalized, if the options is off, the invoices are saved as Draft."
+      placement: "bottom" 
+    ,
+      element: "#shop_auto_send_email"
+      title: "Send E-mail"
+      content: "By default a email is sent to the customer after the invoice is created."
+      placement: "bottom" 
+    ,
+      element: "#menu_help"
+      title: "Menu Help"
+      content: "Here you can view some common questions and answers."
+      placement: "bottom" 
+    ]
+    if(tour.ended()==true)
+      tour.restart()
+    else
+      tour.start(true)
+    return true
 
   $('#tourhome').bind 'click', ->
     tour = new Tour(

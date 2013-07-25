@@ -17,6 +17,12 @@ class HomeController < ApplicationController
   def setup
     @shop=Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
   end
+  
+  def debug
+    @shop=Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
+    @hooks= ShopifyAPI::Webhook.all
+    @webhooks= Webhook.where(:shop_url=>ShopifyAPI::Shop.current.domain).page params[:page]
+  end
 
   private
   def init_shop

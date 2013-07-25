@@ -39,8 +39,9 @@ class Invoice < ActiveRecord::Base
     self.month      = date.month
     self.day        = date.day
 
-    if should_finalize_invoice?(order, new_invoice)
-      @client.update_invoice_state(new_invoice.id, invoice_state)
+    #if should_finalize_invoice?(order, new_invoice)
+    if shop.finalize_invoice==true
+      @client.update_invoice_state(new_invoice.id, state)
     end
     
     add_metafield(order)
@@ -56,7 +57,7 @@ class Invoice < ActiveRecord::Base
       invoice = @client.invoice(self.invoice_id)
       message = Invoicexpress::Models::Message.new(
         :client => invoice.client,
-        :subject => "Your invoice for order #{self.order_number}",
+        :subject => "Invoice for order #{self.order_number}",
         :body => "Attached to this email is your invoice."
       )
       @client.invoice_email(self.invoice_id, message)
