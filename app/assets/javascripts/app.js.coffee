@@ -39,12 +39,12 @@ jQuery ->
     ,
       element: "#shop_finalize_invoice"
       title: "Finalize Invoice"
-      content: "By default all invoices are set to Finalized, if the options is off, the invoices are saved as Draft."
+      content: "By default all invoices are set to Draft , if the options is on, the invoices are saved as Finalized."
       placement: "bottom" 
     ,
       element: "#shop_auto_send_email"
       title: "Send E-mail"
-      content: "By default a email is sent to the customer after the invoice is created."
+      content: "With this option you can send a document to the customer by e-mail when its finalized."
       placement: "bottom" 
     ,
       element: "#menu_help"

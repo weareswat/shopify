@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130725152030) do
+ActiveRecord::Schema.define(:version => 20130731100041) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "order_id"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(:version => 20130725152030) do
     t.string   "email"
     t.string   "invoice_user"
     t.string   "invoice_api"
-    t.boolean  "auto_send_email",     :default => true
+    t.boolean  "auto_send_email",     :default => false
     t.boolean  "auto_sequence",       :default => false
     t.string   "sequence_id"
     t.datetime "created_at",                             :null => false
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(:version => 20130725152030) do
     t.string   "vat_code_outside_eu"
     t.integer  "store_id"
     t.string   "token"
-    t.boolean  "finalize_invoice",    :default => true
+    t.boolean  "finalize_invoice",    :default => false
   end
 
   create_table "webhooks", :force => true do |t|
