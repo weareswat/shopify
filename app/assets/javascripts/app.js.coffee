@@ -6,6 +6,12 @@ jQuery ->
    
 
   $('.dropdown-toggle').dropdown()
+  $('#shop_auto_send_email').on 'change', ->
+    if(this.checked)
+      $("#shop_finalize_invoice").click()
+      $(this).tooltip("show")
+    false
+
   $('#showme1').on 'click', ->
     $("#how1").toggle('fast')
     false
