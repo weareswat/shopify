@@ -6,11 +6,32 @@ jQuery ->
    
 
   $('.dropdown-toggle').dropdown()
-  $('#shop_auto_send_email').on 'change', ->
-    if(this.checked)
-      $("#shop_finalize_invoice").click()
-      $(this).tooltip("show")
+  if($('#shop_finalize_invoice').val()=="false")
+    $("#shop_auto_send_email_true").attr('disabled', true)
+    $("#shop_auto_send_email_false").tooltip("show")
+  else
+    $("#shop_auto_send_email_input input:radio").attr('disabled',false)
+
+  $('#shop_finalize_invoice').on 'change', ->
+    if(this.selectedIndex==0)
+      $("#shop_auto_send_email_true").prop("checked", false)
+      $("#shop_auto_send_email_true").attr('disabled', true)
+      $("#shop_auto_send_email_false").prop("checked", true)
+      $("#shop_auto_send_email_false").tooltip("show")
+      #$("#shop_auto_send_email_input input:radio").attr('disabled',true)
+    else
+      $("#shop_auto_send_email_input input:radio").attr('disabled',false)
+      $("#shop_auto_send_email_false").tooltip("hide")
+
+    
+
     false
+
+  #$('#shop_auto_send_email').on 'change', ->
+  #  if(this.checked)
+  #    $("#shop_finalize_invoice").click()
+  #    $(this).tooltip("show")
+  #  false
 
   $('#showme1').on 'click', ->
     $("#how1").toggle('fast')
