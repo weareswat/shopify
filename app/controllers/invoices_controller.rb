@@ -5,7 +5,24 @@ class InvoicesController < ApplicationController
 
  
   def index
-    @invoices = @shop.invoices.order("created_at DESC").page params[:page]
+    if @shop.invoicexpress_ready? 
+      if @shop.invoicexpress_can_connect?
+        api_client    = @shop.get_invoicexpress_client  
+        api_invoices  = api_client.invoices(:page =>params[:page])
+        @invoices     = Kaminari.paginate_array(api_invoices.invoices, total_count: api_invoices.total_entries).page(api_invoices.current_page).per(api_invoices.per_page)
+        invoice_ids   = @invoices.map(&:id)
+        @db_invoices  = @shop.invoices.where(:invoice_id => invoice_ids)
+
+      else
+        @invoices=[]
+        @msg="Can't connect to InvoiceXpress. Please try again a bit later."
+      end
+    else
+      @invoices=[]
+      @msg="Please fill in your InvoiceXpress API Key and Username in the Setup Page to connect to InvoiceXpress."
+    end
+
+    #@invoices = @shop.invoices.order("created_at DESC").page params[:page]
   end
 
   def new
@@ -57,10 +74,13 @@ class InvoicesController < ApplicationController
     invoice   = Invoice.find(params[:id])
 
     if @shop && invoice
-      if invoice.send_email
+      #heads up, this will finalize invoice
+      status=invoice.send_email
+      if status==true
         redirect_to invoices_path, :notice=>'Sent Invoice to '+invoice.email
       else
-        redirect_to invoices_path, :alert=>'There were problems sending the e-mail. Please contact support.'
+        status= "There was a problem sending the e-mail. Please try again or contact support." if status==false
+        redirect_to invoices_path(:page=>params[:page]), :alert=>"There was problem sending the email: #{status}."
       end
     else
       redirect_to invoices_path, :alert=>'No params sent or shop is nil'

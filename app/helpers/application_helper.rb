@@ -6,6 +6,18 @@ module ApplicationHelper
     end
   end
   
+  def invoiceStatus(state)
+    status=""
+    if state  == 'final'
+      status="label-success"
+    end 
+    if state  == 'draft' 
+      status="label-warning"
+    end 
+     
+    status
+  end
+
   def paymentStatus(order)
     status=""
     if order.status  == 'payed'
@@ -35,11 +47,11 @@ module ApplicationHelper
   # fetch from metafields
   def orderInvoiceId(order)
     id=nil
-    if order.metafields && order.metafields.size>0
+    #if order.metafields 
       order.metafields.each do |meta|
         id=meta.value if meta.key=="invoice_id" && meta.namespace=="invoicexpress"
       end
-    end
+    #end
     id
   end
 

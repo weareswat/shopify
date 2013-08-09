@@ -7,11 +7,10 @@ class HomeController < ApplicationController
     @callback_url = "http://#{current_host}/login"
   end
   
+  # get latest orders
   def index
     init_shop
-    # get latest 5 orders
-    @orders   = ShopifyAPI::Order.find(:all, :params => {:limit => 5, :order => "created_at DESC" })
-    #@orders   = nil
+    @orders = ShopifyAPI::Order.paginate per: 6, page: params[:page], params: {:order => "created_at DESC"}
   end
 
   def setup
@@ -27,19 +26,23 @@ class HomeController < ApplicationController
   private
   def init_shop
     #debugger
-    if Shop.where(:name => ShopifyAPI::Shop.current.name).exists?
+    if Shop.where(:store_url => ShopifyAPI::Shop.current.domain).exists?
+
       @shop=Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
+      
       if session["shopify"] && session["shopify"].token != @shop.token
-        @shop.name=session[:shop]
         @shop.token=session["shopify"].token
         @shop.save
       end
+    
     else
-      @shop = Shop.new(:name => ShopifyAPI::Shop.current.name, :store_url => ShopifyAPI::Shop.current.domain)
-      @shop.token=session["shopify"].token if session["shopify"] && session["shopify"].token != @shop.token
-      @shop.email=ShopifyAPI::Shop.current.email
-      @shop.store_id=ShopifyAPI::Shop.current.id
+      
+      @shop           = Shop.new(:name => ShopifyAPI::Shop.current.name, :store_url => ShopifyAPI::Shop.current.domain)
+      @shop.token     = session["shopify"].token if session["shopify"] 
+      @shop.email     = ShopifyAPI::Shop.current.email
+      @shop.store_id  = ShopifyAPI::Shop.current.id
       @shop.save
+
       init_webhooks
       session[:shop] = @shop.name
       redirect_to setup_path()

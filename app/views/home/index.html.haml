@@ -18,7 +18,7 @@
       %thead
         %tr
           %th Order
-          %th Placed by
+          %th Customer
           %th Payment Status
           %th Fulfillment
           %th Total
@@ -44,10 +44,7 @@
             - if invoiceid
               %a{:href=>"https://#{@shop.invoice_user}.invoicexpress.net/invoices/#{invoiceid}", :target=>'blank'} View on InvoiceXpress
           %td
-            .btn-group
-              %a.btn.btn-success{ :href=> "https://#{shop_session.url}/admin/orders/#{order.id}", :target => 'blank'} View Order
-              %a.btn.btn-success.dropdown-toggle{"data-toggle" => "dropdown"}
-                %span.caret
-              %ul.dropdown-menu
-                %li
-                  = link_to 'Create Invoice', new_invoice_path(:order_id=>order.id)                   
+            = link_to 'Create Invoice', new_invoice_path(:order_id=>order.id), :class=>'btn btn-success' 
+
+    = paginate @orders, :theme=>'twitter-bootstrap'
+                 

@@ -12,6 +12,7 @@ gem 'formtastic'
 gem 'formtastic-bootstrap'  
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
+gem 'shopify-kaminari'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -37,7 +38,7 @@ end
 
 group :development do
   #gem 'thin'
-  #gem 'debugger'
+  gem 'debugger'
   gem 'sqlite3'
 end
 

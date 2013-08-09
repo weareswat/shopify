@@ -28,7 +28,6 @@ class Invoice < ActiveRecord::Base
       :reference    => order.name,
       :observations => order.note,
       :tax_exemption=> get_tax_exemption(order, store.tax_shipping),
-      # :sequence_id  => 266500,
       :client       => @client.client_by_code(order.customer.id)||get_client(order.customer, order.note_attributes),
       :items        => items
     )
@@ -52,15 +51,24 @@ class Invoice < ActiveRecord::Base
   def send_email
     @client = get_invoicexpress_client()
     invoice       = nil
+    
 
     if self.invoice_id
       invoice = @client.invoice(self.invoice_id)
-      message = Invoicexpress::Models::Message.new(
-        :client => invoice.client,
-        :subject => "Invoice for order #{self.order_number}",
-        :body => "Attached to this email is your invoice."
-      )
-      @client.invoice_email(self.invoice_id, message)
+      begin
+        if invoice.status=="draft"
+          state   = Invoicexpress::Models::InvoiceState.new(:state => "finalized")
+          @client.update_invoice_state(self.invoice_id, state)
+        end
+        message = Invoicexpress::Models::Message.new(
+          :client => invoice.client,
+          :subject => "Invoice for order #{self.order_number}",
+          :body => "Attached to this email is your invoice."
+        )
+        @client.invoice_email(self.invoice_id, message)
+      rescue Invoicexpress::UnprocessableEntity => e
+        return e.response_body.errors.first    
+      end
       return true
     else
       return false
@@ -85,11 +93,7 @@ class Invoice < ActiveRecord::Base
   private
     # gets client for invoicexpress
     def get_invoicexpress_client()
-      Invoicexpress::Client.new(
-        :screen_name => self.shop.invoice_user,
-        :api_key     => self.shop.invoice_api
-        #        :proxy       => "http://127.0.0.1:9999"
-      )
+      self.shop.get_invoicexpress_client()
     end
 
     # returns true if the fiscal_id is valid

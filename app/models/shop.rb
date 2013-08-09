@@ -13,10 +13,7 @@ class Shop < ActiveRecord::Base
 
   def invoicexpress_can_connect?
     begin
-      client= Invoicexpress::Client.new(
-        :screen_name => invoice_user,
-        :api_key     => invoice_api
-      )
+      client= get_invoicexpress_client
       if client.clients
         true
       else
@@ -25,6 +22,13 @@ class Shop < ActiveRecord::Base
     rescue Exception=>e
       false
     end
+  end
+  
+  def get_invoicexpress_client
+    Invoicexpress::Client.new(
+      :screen_name =>  invoice_user,
+      :api_key     =>  invoice_api
+    )
   end
 
 end

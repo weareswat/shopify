@@ -52,7 +52,14 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.2)
+    columnize (0.3.6)
     commonjs (0.2.6)
+    debugger (1.6.1)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.3)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.3)
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -173,6 +180,9 @@ GEM
       hashie (>= 1.1.0)
       multi_json (~> 1.0)
       uuidtools
+    shopify-kaminari (0.1.0)
+      kaminari (>= 0.12.4)
+      shopify_api (>= 1.2.5)
     shopify_api (3.0.3)
       activeresource (>= 3.0.0)
       thor (>= 0.14.4)
@@ -212,6 +222,7 @@ PLATFORMS
 DEPENDENCIES
   bootstrap-kaminari-views
   coffee-rails (~> 3.2.1)
+  debugger
   font-awesome-rails
   formtastic
   formtastic-bootstrap
@@ -225,6 +236,7 @@ DEPENDENCIES
   pry
   rails (= 3.2.13)
   sentry-raven
+  shopify-kaminari
   shopify_app (= 4.1.1)
   sqlite3
   therubyracer
