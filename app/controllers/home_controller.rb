@@ -11,6 +11,8 @@ class HomeController < ApplicationController
   def index
     init_shop
     @orders = ShopifyAPI::Order.paginate per: 6, page: params[:page], params: {:order => "created_at DESC"}
+    order_ids   = @orders.map(&:id)
+    @db_invoices  = @shop.invoices.where(:order_id => order_ids)
   end
 
   def setup

@@ -1,4 +1,5 @@
 %br
+=@db_invoices
 
 %section#tables
   %header
@@ -21,11 +22,12 @@
           %th Customer
           %th Payment Status
           %th Fulfillment
-          %th Total
           %th Invoice
+          %th Total
           %th Action
       %tbody
-      - @orders.each do |order| 
+      - @orders.each do |order|
+        - db_invoice= @db_invoices.select { |dbinvoice| dbinvoice.order_id == order.id }.first
         %tr
           %td.primary
             = link_to order.name, "https://#{shop_session.url}/admin/orders/#{order.id}", :target => 'blank'
@@ -36,15 +38,18 @@
           %td 
             %span.label{:class=>orderFulfilmentStatus(order)}
               = orderFulfilmentLabel(order)
+          %td
+            - if db_invoice
+              %span.label{:class=>'label label-success'}
+                created
           %td 
             = order.total_price
             = order.currency
           %td
-            - invoiceid=orderInvoiceId(order)
-            - if invoiceid
-              %a{:href=>"https://#{@shop.invoice_user}.invoicexpress.net/invoices/#{invoiceid}", :target=>'blank'} View on InvoiceXpress
-          %td
-            = link_to 'Create Invoice', new_invoice_path(:order_id=>order.id), :class=>'btn btn-success' 
+            - if db_invoice
+              %a{:href=>"https://#{@shop.invoice_user}.invoicexpress.net/invoices/#{db_invoice.invoice_id}", :target=>'blank', :class=>'btn btn-success'} View on InvoiceXpress
+            -else
+              = link_to 'Create Invoice', new_invoice_path(:order_id=>order.id), :class=>'btn btn-success' 
 
     = paginate @orders, :theme=>'twitter-bootstrap'
                  
