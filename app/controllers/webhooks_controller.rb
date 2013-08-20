@@ -36,28 +36,35 @@ class WebhooksController < ApplicationController
   end
 
   private
+
   #note: could this be on a module? or in the model?
   def send_to_invoicexpress(shop, order, webhook)
-    invoice=Invoice.new(
-      :store_url=>    shop.store_url, 
-      :order_id=>     order.id,
-      :shop_id=>      shop.id, 
-      :order_number=> order.name,
-      :total=>        order.total_price, 
-      :email=>        order.email,
-      :name=>         "#{order.customer.first_name} #{order.customer.last_name}"
-    )
-    invoice.create_invoicexpress()
-    if invoice.save
-      invoice.send_email if shop.auto_send_email==true
-      #complete this information if possible
-      webhook.shop_id     = shop.id
-      webhook.invoice_id  = invoice.id
-      webhook.save
+    existing_invoices = Invoice.where(:order_id=>order.id)
+    if existing_invoices && existing_invoices.size>0
       true
     else
-      false
+      invoice=Invoice.new(
+        :store_url=>    shop.store_url, 
+        :order_id=>     order.id,
+        :shop_id=>      shop.id, 
+        :order_number=> order.name,
+        :total=>        order.total_price, 
+        :email=>        order.email,
+        :name=>         "#{order.customer.first_name} #{order.customer.last_name}"
+      )
+      invoice.create_invoicexpress()
+      if invoice.save
+        invoice.send_email if shop.auto_send_email==true
+        #complete this information if possible
+        webhook.shop_id     = shop.id
+        webhook.invoice_id  = invoice.id
+        webhook.save
+        true
+      else
+        false
+      end
     end
+    
   end
 
   def verify_webhook

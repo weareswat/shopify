@@ -63,7 +63,7 @@ class Invoice < ActiveRecord::Base
         message = Invoicexpress::Models::Message.new(
           :client => invoice.client,
           :subject => "Invoice for order #{self.order_number}",
-          :body => "Attached to this email is your invoice."
+          :body => "Here's your invoice from the order #{self.order_number}. Thanks you for shopping with us. See you soon."
         )
         @client.invoice_email(self.invoice_id, message)
       rescue Invoicexpress::UnprocessableEntity => e

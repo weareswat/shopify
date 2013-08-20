@@ -61,7 +61,11 @@ class InvoicesController < ApplicationController
       @invoice = Invoice.new(params[:invoice])
       @invoice.create_invoicexpress()
       if @invoice.save
-        redirect_to invoices_path, :notice=>'Created invoice'
+        if shop.auto_send_email==true
+          redirect_to send_email_invoice_path(@invoice.id)
+        else
+          redirect_to invoices_path, :notice=>'Created invoice with success'
+        end
       else
         render :new, :notice=>'There were problems with the form, please fill the missing information.'
       end

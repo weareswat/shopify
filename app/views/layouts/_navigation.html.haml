@@ -23,7 +23,7 @@
 
         %ul#menu_settings.nav.pull-right
           %li.dropdown
-            = link_to raw(shop_session.url+' <b class="caret"></b>'), "https://#{shop_session.url}", :class => 'shop_name dropdown-toggle', :'data-toggle' => 'dropdown', :'data-target' => '#'
+            = link_to raw(shop_session.shop.name.to_s+' <b class="caret"></b>'), "https://#{shop_session.url}", :class => 'shop_name dropdown-toggle', :'data-toggle' => 'dropdown', :'data-target' => '#'
             %ul.dropdown-menu
               %li= link_to "Store", "http://"+shop_session.url, :target => 'blank'
               %li= link_to 'Shopify Admin', "http://"+shop_session.url+"/admin", :target => 'blank'
