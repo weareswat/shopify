@@ -1,0 +1,61 @@
+%br
+%section#tables
+  %header
+    %h1 All Invoices
+  
+  -if @invoices.blank?
+    .row-fluid
+      .span12
+        .alert.alert-block
+          -if @msg
+            %h2.alert-heading Warning
+            %p=@msg
+          -else
+            %h2.alert-heading No Invoices
+            %p There are no invoices created with InvoiceXpress in your store yet.
+  
+  -else
+    %table.table.full-section.table-hover
+      %thead
+        %tr
+          %th Invoice Number
+          %th Order no
+          %th Status
+          %th Customer
+          %th Total
+          %th Created at
+          %th Action
+      %tbody
+      - @invoices.each do |invoice| 
+        - db_invoice= @db_invoices.select { |dbinvoice| dbinvoice.invoice_id == invoice.id }.first
+        -if db_invoice
+          %tr
+            %td.primary
+              %a{:href=>"https://#{@shop.invoice_user}.invoicexpress.net/invoices/#{invoice.id}", :target=>'blank'}= invoice.sequence_number
+            %td
+              - if db_invoice
+                = link_to db_invoice.order_number, "https://#{shop_session.url}/admin/orders/#{db_invoice.order_id}", :target => 'blank'
+              - else
+                %p.muted Order not created in Shopify
+            %td
+              - if invoice.status=="final"
+                %span.label.label-success
+                  Final
+              - else
+                %span.label
+                  =invoice.status
+            %td
+              %p{:class => ("muted" unless db_invoice)}= invoice.client.name
+            %td
+              %p{:class => ("muted" unless db_invoice)}= "#{invoice.total} EUR" 
+            %td
+              %p{:class => ("muted" unless db_invoice)}= invoice.date.strftime("%d %b %Y")
+            %td
+              - if db_invoice
+                - if invoice.status=="draft"
+                  = link_to 'E-mail Invoice to customer', send_email_invoice_path(db_invoice.id, :page=>params[:page]), :method=>:post, :confirm=>'Sending e-email will change the invoice state to Final. Do you want to continue?', :class=>"btn btn-success"
+                -else
+                  = link_to 'E-mail Invoice to customer', send_email_invoice_path(db_invoice.id, :page=>params[:page]), :method=>:post, :class=>"btn btn-success"
+              - else
+                %p.muted No actions available
+    = paginate @invoices, :theme=>'twitter-bootstrap'

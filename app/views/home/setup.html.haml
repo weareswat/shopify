@@ -1,0 +1,60 @@
+%br
+%section#forms
+  - if !@shop.nil? && !@shop.invoicexpress_ready?
+    .hero-unit
+      %h1 Welcome
+      %p 
+        You're one step closer to sending invoices automaticaly on your shop using InvoiceXpress. We just need two pieces of information from your account. If you do not have one account, we offer a free trial.
+      %p
+        %a.btn.btn-large.btn-success{:href=>"http://www.invoicexpress.com/", :target=>'_blank'} Login or Register at InvoiceXpress
+  - else
+    .pull-right
+      %a.btn{ :href=> "#", :id=>'toursetup'} Help
+    .page-header
+      %h1 Setup
+
+  .row-fluid
+    .span12
+       
+
+      = semantic_form_for @shop, :html => { :class=>'form-horizontal'} do |f| 
+        / %ul#myTab.nav.nav-tabs
+        /   %li.active
+        /     %a{:href=>'#api', "data-toggle"=>"tab"} 
+        /       InvoiceXpress API
+        / %li
+        /   %a{:href=>'#options', "data-toggle"=>"tab"} Options
+        / %li
+        /   %a{:href=>'#defaults', "data-toggle"=>"tab"} Advanced
+        .tab-content
+          #api.tab-pane.active
+            .row-fluid
+              .span8
+                = f.inputs do 
+                  = f.input :invoice_user, :required => true, :input_html => {:class=>'input-xlarge'}, :hint=> 'Your InvoiceXpress User. Ex: http://SUBDOMAIN.invoicexpress.net <a href="#how1" id="showme1" class="btn btn-mini btn-info">Help</a>'.html_safe
+                  = f.input :invoice_api, :required => true, :input_html => {:class=>'input-xlarge'}, :hint=>'Your InvoiceXpress API Key. Ex: 00asdasdasdsasd1 <a href="#how2" id="showme2" class="btn btn-mini btn-info">Help</a>'.html_safe
+                  = f.input :finalize_invoice ,  :as=> :select, :collection => options_for_select({ "Draft" => false, "Final" => true }, @shop.finalize_invoice), :wrapper_html => {:class=>'stupid_checklabel'}, :include_blank => false, :label=>'Invoice State'
+                  = f.input :auto_send_email ,  :as => :radio,  :include_blank => false,  :wrapper_html => {:class=>'stupid_checklabel'}, :label=>'Send by e-mail', :input_html=>{:rel=>'tooltip', :'data-placement'=>'bottom', :'data-original-title'=>"In order to send email to customer, the invoice must be in Final state."  }
+              .span4
+                .well.hide#how1
+                  .pull-right
+                    %a{:href=>"#", :class=>'close'} &times;
+                  %h4 Where to obtain username
+                  = image_tag 'screen1.png'
+                  %p Copy the first part of your invoiceXpress URL.
+                .well.hide#how2
+                  .pull-right
+                    %a{:href=>"#", :class=>'close'} &times;
+                  %h4 Where to obtain your API Key
+                  = image_tag 'screen2.png'
+                  %p 1) In InvoiceXpress, go to 'Settings'
+                  %p 2) Click on API
+                  %p 3) Click on Activate Token
+                  %p 4) Copy the API key
+
+ 
+        %br
+        = f.actions do 
+          = f.action :submit, :as => :button, :label=>'Save information', :button_html =>{:class=>'btn btn-large btn-success', :disable_with => 'Wait...' }
+          = link_to "Cancel", root_path, :class => 'btn btn-large'
+         

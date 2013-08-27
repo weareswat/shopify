@@ -1,0 +1,7 @@
+- if !@shop.nil? && !@shop.invoicexpress_ready?
+  %br
+  .alert.alert-block
+    %h4
+      Attention Please!
+      %a.btn.btn-large.btn-warning.pull-right{:href => "/setup"} Continue to Setup
+    %p We need your InvoiceXpress API key in order to send invoices. Please update your information in the setup area.

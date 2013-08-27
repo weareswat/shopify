@@ -1,0 +1,52 @@
+=== Useful
+
+rails console
+
+@client = Invoicexpress::Client.new(
+  :screen_name => "thinkorangeteste",
+  :api_key     => "85635b50ef504e64144d2a666f248c7ff96403f1",
+  :proxy       => "http://127.0.0.1:9999"
+)
+
+
+ShopifyAPI::Base.site = 'https://447aa894bc1f575eb07cd5a43a9dccdc:31c5f5b26b6f1cf212f8a91a227cb7ff@flatley-farrell8724.myshopify.com/admin'
+shop = ShopifyAPI::Shop.current
+
+#desconto total 5 eruos
+order=ShopifyAPI::Order.find(173262381)
+
+http://flatley-farrell8724.myshopify.com
+info@thinkorange.pt
+oranges*
+
+
+front:
+whewya
+
+=== InvoiceXpress
+
+thinkorangeteste
+85635b50ef504e64144d2a666f248c7ff96403f1
+
+=== Payment
+
+You can make test orders by using the following credentials:
+Credit Card Number
+1
+Expiration Date
+[some time in the future]
+Card security code
+123
+
+=== test webhooks
+
+1) download pagekite
+curl -s https://pagekite.net/pk/ |sudo bash
+
+2) use pagekite
+pagekite.py 3000 thinkorange.pagekite.me
+
+=== Heroku logs
+
+heroku addons:open papertrail
+

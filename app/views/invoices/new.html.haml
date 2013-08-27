@@ -1,0 +1,18 @@
+%section#forms
+  %header
+    %h1 New Invoice
+  
+  .row-fluid
+    .span12
+      = semantic_form_for @invoice, :html => { :class=>'form-horizontal'} do |f| 
+        = f.inputs :name=>"Summary" do 
+          = f.input :email, :input_html => {:class=>'input-xlarge', :readonly => true }  
+          = f.input :name, :input_html => {:class=>'input-xlarge', :readonly => true} 
+          = f.input :total, :input_html => {:class=>'input-xlarge', :readonly => true} 
+          = f.input :order_id, :as=>:hidden
+          = f.input :order_number, :input_html => {:class=>'input-xlarge', :readonly => true}
+          = f.input :shop_id, :as=>:hidden
+          = f.input :store_url, :as=>:hidden
+          
+        = f.actions do 
+          = f.action :submit, :as => :button, :label=>'Create Invoice', :button_html =>{:class=>'btn btn-large btn-success', :disable_with => 'Wait...' }

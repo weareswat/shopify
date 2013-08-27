@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  order_id: 1
+  shop_id: 1
+  store_url: MyString
+  total: MyString
+  email: MyString
+  name: MyString
+  invoice_id: 1
+  day: 1
+  month: 1
+  year: 1
+
+two:
+  order_id: 1
+  shop_id: 1
+  store_url: MyString
+  total: MyString
+  email: MyString
+  name: MyString
+  invoice_id: 1
+  day: 1
+  month: 1
+  year: 1
