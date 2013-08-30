@@ -10,6 +10,8 @@
       - if shop_session
         .nav-collapse
           %ul.nav
+            %li{:class=>"#{active_nav_class('home')}"}
+              = link_to 'Orders', root_path, :id=>'menu_orders'
             %li{:class=>"#{active_nav_class('invoices')}"}
               =link_to 'Invoices', invoices_path, :id=>'menu_invoices'
             %li{:class=>"#{active_nav_class('home', 'setup')}"}
