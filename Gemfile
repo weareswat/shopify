@@ -9,7 +9,7 @@ gem 'jquery-rails'
 gem 'less-rails-bootstrap'
 gem "font-awesome-rails"
 gem 'formtastic'
-gem 'formtastic-bootstrap'  
+gem 'formtastic-bootstrap'
 gem 'kaminari'
 gem 'bootstrap-kaminari-views'
 gem 'shopify-kaminari'
@@ -28,11 +28,11 @@ end
 gem 'valvat'
 gem 'haml-rails'
 
-gem 'invoicexpress', :path => "vendor/gems/invoicexpress_temp"
+gem 'invoicexpress'
 gem 'pry'
 gem 'sentry-raven'
 
-group :production do 
+group :production do
   gem 'pg'
 end
 
