@@ -20,8 +20,8 @@ Invoicexpress::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
 
-  config.shopify.api_key = "48d95a564b8b8b373ba86e8a592fc6da"
-  config.shopify.secret = "034c042a98be466b7b880941212af4b0"
+  config.shopify.api_key = "1bad1d3eedf4115932cdb2f50d2d43f7"
+  config.shopify.secret = "bbee870790fee7d81aaf06836c602f34"
   
 
   # Defaults to nil and saved in location specified by config.assets.prefix
