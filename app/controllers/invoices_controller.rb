@@ -55,13 +55,13 @@ class InvoicesController < ApplicationController
 
   # manually creates 
   def create
-    order   = nil
+    #order   = nil
 
     if @shop && params[:invoice]
       @invoice = Invoice.new(params[:invoice])
       @invoice.create_invoicexpress()
       if @invoice.save
-        if shop.auto_send_email==true
+        if @shop.auto_send_email==true
           redirect_to send_email_invoice_path(@invoice.id)
         else
           redirect_to invoices_path, :notice=>'Created invoice with success'
