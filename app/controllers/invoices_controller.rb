@@ -55,8 +55,6 @@ class InvoicesController < ApplicationController
 
   # manually creates 
   def create
-    
-
     if @shop && params[:invoice]
       @invoice = Invoice.new(params[:invoice])
       @invoice.create_invoicexpress()

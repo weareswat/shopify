@@ -50,3 +50,23 @@ pagekite.py 3000 thinkorange.pagekite.me
 
 heroku addons:open papertrail
 
+
+  store_url   = "shop-translator-staging.myshopify.com"
+  store_token = "ad619d63ee7780d51858d7618df14fba"
+  session     = ShopifyAPI::Session.new(store_url, store_token)
+  ShopifyAPI::Base.activate_session(session)
+
+  store_url   = "acdtest.myshopify.com"
+  store_token = "8bfb4080b35e791e03890bfea8b7f84d"
+  session     = ShopifyAPI::Session.new(store_url, store_token)
+  ShopifyAPI::Base.activate_session(session)
+ 
+
+  store_url   = "benfas.myshopify.com"
+  store_token = "adba400a9bc715d1aca9ee88720ef1d3"
+  session     = ShopifyAPI::Session.new(store_url, store_token)
+  ShopifyAPI::Base.activate_session(session)
+ 
+
+
+
