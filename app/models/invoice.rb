@@ -10,6 +10,7 @@ class Invoice < ActiveRecord::Base
 
   #created invoice via invoicexpress
   def create_invoicexpress()
+    status  = true
     @client = get_invoicexpress_client()
     order   = ShopifyAPI::Order.find(self.order_id)
     store   = ShopifyAPI::Shop.current
@@ -40,12 +41,19 @@ class Invoice < ActiveRecord::Base
 
     #if should_finalize_invoice?(order, new_invoice)
     if shop.finalize_invoice==true
-      @client.update_invoice_state(new_invoice.id, state)
+      #most probable cause: Date can not be before last sent invoice of this sequence
+      begin
+        @client.update_invoice_state(new_invoice.id, state)
+      rescue Invoicexpress::UnprocessableEntity => e
+        logger.debug(e.response_body.errors.first)
+        status= e.response_body.errors.first
+      end
     end
     
     add_metafield(order)
-
-    return self.invoice_id
+    
+    #return self.invoice_id
+    return status
   end
   
   def send_email
