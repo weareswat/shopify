@@ -6,46 +6,57 @@ class Invoice < ActiveRecord::Base
 
   paginates_per 10
 
-  #before_create :create_invoice
-
-  #created invoice via invoicexpress
+  #creates a invoice via invoicexpress
   def create_invoicexpress()
-    @client = get_invoicexpress_client()
-    order   = ShopifyAPI::Order.find(self.order_id)
-    store   = ShopifyAPI::Shop.current
-    date    = get_ix_date(order.created_at)
-    state   = Invoicexpress::Models::InvoiceState.new(:state => "finalized")
-    
-    #items leave it like this for now for debugging issues
-    items=[]
-    line_items      = get_line_items(order, store.taxes_included)
-    shipping_items  = get_shipping(order, store.taxes_included, store.tax_shipping)
-    items           = line_items+shipping_items
-    
-    new_invoice = Invoicexpress::Models::Invoice.new(
-      :date         => date,
-      :due_date     => date,
-      :reference    => order.name,
-      :observations => order.note,
-      :tax_exemption=> get_tax_exemption(order, store.tax_shipping),
-      :client       => @client.client_by_code(order.customer.id)||get_client(order.customer, order.note_attributes),
-      :items        => items
-    )
-    #debugger
-    new_invoice     = @client.create_invoice(new_invoice)
-    self.invoice_id = new_invoice.id
-    self.year       = date.year
-    self.month      = date.month
-    self.day        = date.day
+    status  = true
+    begin
+      @client = get_invoicexpress_client()
+      order   = ShopifyAPI::Order.find(self.order_id)
+      store   = ShopifyAPI::Shop.current
+      date    = get_ix_date(order.created_at)
+      state   = Invoicexpress::Models::InvoiceState.new(:state => "finalized")
+      
+      #items leave it like this for now for debugging issues
+      items=[]
+      line_items      = get_line_items(order, store.taxes_included)
+      shipping_items  = get_shipping(order, store.taxes_included, store.tax_shipping)
+      items           = line_items+shipping_items
+      
+      new_invoice = Invoicexpress::Models::Invoice.new(
+        :date         => date,
+        :due_date     => date,
+        :reference    => order.name,
+        :observations => order.note,
+        :tax_exemption=> get_tax_exemption(order, store.tax_shipping),
+        :client       => @client.client_by_code(order.customer.id)||get_client(order.customer, order.note_attributes),
+        :items        => items
+      )
+      #debugger
+      new_invoice     = @client.create_invoice(new_invoice)
+      self.invoice_id = new_invoice.id
+      self.year       = date.year
+      self.month      = date.month
+      self.day        = date.day
 
-    #if should_finalize_invoice?(order, new_invoice)
-    if shop.finalize_invoice==true
-      @client.update_invoice_state(new_invoice.id, state)
-    end
-    
-    add_metafield(order)
+      #if should_finalize_invoice?(order, new_invoice)
+      if shop.finalize_invoice==true
+        #most probable cause: Date can not be before last sent invoice of this sequence
+        begin
+          @client.update_invoice_state(new_invoice.id, state)
+        rescue Invoicexpress::UnprocessableEntity => e
+          logger.debug(e.response_body.errors.first)
+          status= e.response_body.errors.first
+        end
+      end
+      
+      add_metafield(order)
+    rescue Faraday::Error::ConnectionFailed => e
+      logger.debug("ConnectionFailed with InvoiceXpress")
+      status= "ConnectionFailed with InvoiceXpress API"
+    end  
 
-    return self.invoice_id
+    #return self.invoice_id
+    return status
   end
   
   def send_email
