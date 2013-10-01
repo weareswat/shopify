@@ -57,15 +57,17 @@ class HomeController < ApplicationController
     if Rails.env.development?
       address="https://thinkorange.pagekite.me/webhooks"
     else
-      address="http://shopinvoicexpress.herokuapp.com/webhooks"
+      #TODO add staging env
+      #address="http://shopinvoicexpress.herokuapp.com/webhooks"
+      address="http://invoicexpress-shopify.herokuapp.com/webhooks"
     end  
 
     webhook = ShopifyAPI::Webhook.create(:format => "json",  :topic => "orders/paid", :address => address)
     if webhook.valid?
-      #debugger
       logger.debug("oh Webhook invalid: #{webhook.errors}")
     else
       logger.debug('Created webhook')
     end
+    
   end
 end
