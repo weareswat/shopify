@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '1.9.3'
 
 gem 'rails', '3.2.13'
 
@@ -30,7 +31,7 @@ gem 'haml-rails'
 
 gem 'invoicexpress'
 gem 'pry'
-gem 'sentry-raven'
+#gem 'sentry-raven'
 
 group :production do
   gem 'pg'

@@ -55,16 +55,19 @@ class InvoicesController < ApplicationController
 
   # manually creates 
   def create
-    #order   = nil
-
     if @shop && params[:invoice]
       @invoice = Invoice.new(params[:invoice])
-      @invoice.create_invoicexpress()
+      status   = @invoice.create_invoicexpress()
+
       if @invoice.save
-        if @shop.auto_send_email==true
-          redirect_to send_email_invoice_path(@invoice.id)
+        if status==true
+          if @shop.auto_send_email==true
+            redirect_to send_email_invoice_path(@invoice.id)
+          else
+            redirect_to invoices_path, :notice=>'Created invoice with success'
+          end
         else
-          redirect_to invoices_path, :notice=>'Created invoice with success'
+          redirect_to invoices_path(:page=>params[:page]), :alert=>"There was problem creating the invoice: #{status}."
         end
       else
         render :new, :notice=>'There were problems with the form, please fill the missing information.'
