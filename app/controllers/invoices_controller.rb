@@ -67,7 +67,7 @@ class InvoicesController < ApplicationController
             redirect_to invoices_path, :notice=>'Created invoice with success'
           end
         else
-          redirect_to invoices_path(:page=>params[:page]), :alert=>"There was problem changing the state: #{status}."
+          redirect_to invoices_path(:page=>params[:page]), :alert=>"There was problem creating the invoice: #{status}."
         end
       else
         render :new, :notice=>'There were problems with the form, please fill the missing information.'
