@@ -31,7 +31,7 @@ gem 'haml-rails'
 
 gem 'invoicexpress'
 gem 'pry'
-#gem 'sentry-raven'
+gem 'sentry-raven'
 
 group :production do
   gem 'pg'

@@ -60,6 +60,8 @@ class Invoice < ActiveRecord::Base
     rescue Invoicexpress::NotFound => e
       logger.debug("Error: NotFound")
       status= e.response_body
+    rescue Faraday::Error::TimeoutError => e
+      status= e.response_body
     end  
 
     #return self.invoice_id
