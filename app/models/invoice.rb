@@ -44,12 +44,11 @@ class Invoice < ActiveRecord::Base
         begin
           @client.update_invoice_state(new_invoice.id, state)
         rescue Invoicexpress::UnprocessableEntity => e
-          logger.debug(e.response_body.errors.first)
           status= e.response_body.errors.first
         end
       end
       
-      add_metafield(order)
+      #add_metafield(order)
     rescue Faraday::Error::ConnectionFailed => e
       logger.debug("ConnectionFailed with InvoiceXpress")
       status= "ConnectionFailed with InvoiceXpress API"
@@ -63,14 +62,15 @@ class Invoice < ActiveRecord::Base
     @client = get_invoicexpress_client()
     invoice       = nil
     
-
     if self.invoice_id
       invoice = @client.invoice(self.invoice_id)
       begin
+        #before we send email, the invoice must be finalized.
         if invoice.status=="draft"
           state   = Invoicexpress::Models::InvoiceState.new(:state => "finalized")
           @client.update_invoice_state(self.invoice_id, state)
         end
+
         message = Invoicexpress::Models::Message.new(
           :client => invoice.client,
           :subject => "Invoice for order #{self.order_number}",
@@ -102,6 +102,18 @@ class Invoice < ActiveRecord::Base
 
 
   private
+    # what it says
+    def check_account_authorized()
+      authorized=false
+      begin
+        @client.accounts
+        authorized=true
+      rescue Invoicexpress::Unauthorized => e
+        puts e.response_body 
+      end
+      authorized
+    end
+
     # gets client for invoicexpress
     def get_invoicexpress_client()
       self.shop.get_invoicexpress_client()

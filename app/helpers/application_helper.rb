@@ -45,15 +45,14 @@ module ApplicationHelper
   end
   
   # fetch from metafields
-  def orderInvoiceId(order)
-    id=nil
-    #if order.metafields 
-      order.metafields.each do |meta|
-        id=meta.value if meta.key=="invoice_id" && meta.namespace=="invoicexpress"
-      end
-    #end
-    id
-  end
+  # deprecated: never used
+  #def orderInvoiceId(order)
+  #  id=nil
+  #  order.metafields.each do |meta|
+  #    id=meta.value if meta.key=="invoice_id" && meta.namespace=="invoicexpress"
+  #  end
+  #  id
+  #end
 
   def orderFulfilmentStatus(order)
     status=""
