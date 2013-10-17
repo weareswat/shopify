@@ -20,6 +20,7 @@ Invoicexpress::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
 
+  #these are for InvoiceXpress in production
   config.shopify.api_key = "1bad1d3eedf4115932cdb2f50d2d43f7"
   config.shopify.secret = "bbee870790fee7d81aaf06836c602f34"
   

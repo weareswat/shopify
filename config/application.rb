@@ -13,6 +13,7 @@ module Invoicexpress
   class Application < Rails::Application
     
     # Shopify API connection credentials:
+    # Use these for http://localhost:5000/login
     config.shopify.api_key = "375e843695e2fb07d54fe379cbe28620"
     config.shopify.secret = "d0e2278eac5b8ff54bd93169a6494b20"
     
