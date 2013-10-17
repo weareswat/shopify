@@ -41,18 +41,27 @@ class Invoice < ActiveRecord::Base
       #if should_finalize_invoice?(order, new_invoice)
       if shop.finalize_invoice==true
         #most probable cause: Date can not be before last sent invoice of this sequence
-        begin
-          @client.update_invoice_state(new_invoice.id, state)
-        rescue Invoicexpress::UnprocessableEntity => e
-          logger.debug(e.response_body.errors.first)
-          status= e.response_body.errors.first
-        end
+        @client.update_invoice_state(new_invoice.id, state)
       end
       
-      add_metafield(order)
+      #add_metafield(order)
     rescue Faraday::Error::ConnectionFailed => e
       logger.debug("ConnectionFailed with InvoiceXpress")
-      status= "ConnectionFailed with InvoiceXpress API"
+      status= "Connection Failed with the InvoiceXpress API. Please try again or contact support if the error persists."
+    rescue Invoicexpress::UnprocessableEntity => e
+      logger.debug("Error: UnprocessableEntity")
+      status= e.response_body.errors.first
+    rescue Invoicexpress::Unauthorized => e
+      logger.debug("Error: Unauthorized")
+      status= e.response_body
+    rescue Invoicexpress::InternalServerError => e
+      logger.debug("Error: InternalServerError")
+      status= e.response_body
+    rescue Invoicexpress::NotFound => e
+      logger.debug("Error: NotFound")
+      status= e.response_body
+    rescue Faraday::Error::TimeoutError => e
+      status= "There was a timeout connecting with the InvoiceXpress API. Please try again or contact support if the error persists."
     end  
 
     #return self.invoice_id
@@ -63,14 +72,15 @@ class Invoice < ActiveRecord::Base
     @client = get_invoicexpress_client()
     invoice       = nil
     
-
     if self.invoice_id
       invoice = @client.invoice(self.invoice_id)
       begin
+        #before we send email, the invoice must be finalized.
         if invoice.status=="draft"
           state   = Invoicexpress::Models::InvoiceState.new(:state => "finalized")
           @client.update_invoice_state(self.invoice_id, state)
         end
+
         message = Invoicexpress::Models::Message.new(
           :client => invoice.client,
           :subject => "Invoice for order #{self.order_number}",
@@ -102,6 +112,18 @@ class Invoice < ActiveRecord::Base
 
 
   private
+    # what it says
+    def check_account_authorized()
+      authorized=false
+      begin
+        @client.accounts
+        authorized=true
+      rescue Invoicexpress::Unauthorized => e
+        puts e.response_body 
+      end
+      authorized
+    end
+
     # gets client for invoicexpress
     def get_invoicexpress_client()
       self.shop.get_invoicexpress_client()

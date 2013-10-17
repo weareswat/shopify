@@ -3,9 +3,39 @@ jQuery ->
   #$("a[rel=popover]").popover()
   #$(".tooltip").tooltip()
   #$("a[rel=tooltip]").tooltip()
-   
-
+  
   $('.dropdown-toggle').dropdown()
+
+
+  #
+  # WIZARD
+  #
+  $('.wizard a').on 'click', ->
+    $(".wizard").hide('fast')
+    $("form.shop").show('slow')
+    console.log($(this).attr('href'))
+    if($(this).attr('href')!="#")
+      window.open($(this).attr('href'), '_blank')
+
+    return false
+
+  #
+  # SETUP
+  #
+  $('#showme1').on 'click', ->
+    $("#how1").toggle('fast')
+    $("#how2").hide()
+    false
+
+  $('#showme2').on 'click', ->
+    $("#how2").toggle('fast')
+    $("#how1").hide()
+    false
+  
+  $('.close').on 'click', ->
+    $(this).parent().parent().toggle('fast')
+    false
+
   if($('#shop_finalize_invoice').val()=="false")
     $("#shop_auto_send_email_true").attr('disabled', true)
     $("#shop_auto_send_email_false").tooltip("show")
@@ -22,29 +52,13 @@ jQuery ->
     else
       $("#shop_auto_send_email_input input:radio").attr('disabled',false)
       $("#shop_auto_send_email_false").tooltip("hide")
-
     
+    return false
 
-    false
 
-  #$('#shop_auto_send_email').on 'change', ->
-  #  if(this.checked)
-  #    $("#shop_finalize_invoice").click()
-  #    $(this).tooltip("show")
-  #  false
-
-  $('#showme1').on 'click', ->
-    $("#how1").toggle('fast')
-    false
-
-  $('#showme2').on 'click', ->
-    $("#how2").toggle('fast')
-    false
-  
-  $('.close').on 'click', ->
-    $(this).parent().parent().toggle('fast')
-    false
-
+  #
+  # TOUR (used everywhere)
+  #
   $('#toursetup').bind 'click', ->
     tour = new Tour(
       name: "toursetup"

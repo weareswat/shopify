@@ -21,7 +21,7 @@
     .container
       .content
         = render "layouts/messages"
-        - unless params[:action]=='setup'
+        - unless params[:action]=='setup' || params[:action]=='step1'
           = render "layouts/validate_api"
 
         = yield

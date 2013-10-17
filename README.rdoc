@@ -4,8 +4,8 @@ rails console
 
 @client = Invoicexpress::Client.new(
   :screen_name => "thinkorangeteste",
-  :api_key     => "85635b50ef504e64144d2a666f248c7ff96403f1",
-  :proxy       => "http://127.0.0.1:9999"
+  :api_key     => "85635b50ef504e64144d2a666f248c7ff96403f1x",
+  #:proxy       => "http://127.0.0.1:9999"
 )
 
 
@@ -68,5 +68,6 @@ heroku addons:open papertrail
   ShopifyAPI::Base.activate_session(session)
  
 
+ 
 
 

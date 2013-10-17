@@ -22,3 +22,4 @@ tags
 .rvmrc
 logfile
 dump.rdb
+.env

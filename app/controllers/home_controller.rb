@@ -47,7 +47,7 @@ class HomeController < ApplicationController
 
       init_webhooks
       session[:shop] = @shop.name
-      redirect_to setup_path()
+      redirect_to wizard_path()
     end
   end
   
