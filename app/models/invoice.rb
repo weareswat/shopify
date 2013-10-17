@@ -47,7 +47,7 @@ class Invoice < ActiveRecord::Base
       #add_metafield(order)
     rescue Faraday::Error::ConnectionFailed => e
       logger.debug("ConnectionFailed with InvoiceXpress")
-      status= "ConnectionFailed with InvoiceXpress API"
+      status= "Connection Failed with the InvoiceXpress API. Please try again or contact support if the error persists."
     rescue Invoicexpress::UnprocessableEntity => e
       logger.debug("Error: UnprocessableEntity")
       status= e.response_body.errors.first
@@ -61,7 +61,7 @@ class Invoice < ActiveRecord::Base
       logger.debug("Error: NotFound")
       status= e.response_body
     rescue Faraday::Error::TimeoutError => e
-      status= e.response_body
+      status= "There was a timeout connecting with the InvoiceXpress API. Please try again or contact support if the error persists."
     end  
 
     #return self.invoice_id
