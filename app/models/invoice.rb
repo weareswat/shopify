@@ -41,17 +41,25 @@ class Invoice < ActiveRecord::Base
       #if should_finalize_invoice?(order, new_invoice)
       if shop.finalize_invoice==true
         #most probable cause: Date can not be before last sent invoice of this sequence
-        begin
-          @client.update_invoice_state(new_invoice.id, state)
-        rescue Invoicexpress::UnprocessableEntity => e
-          status= e.response_body.errors.first
-        end
+        @client.update_invoice_state(new_invoice.id, state)
       end
       
       #add_metafield(order)
     rescue Faraday::Error::ConnectionFailed => e
       logger.debug("ConnectionFailed with InvoiceXpress")
       status= "ConnectionFailed with InvoiceXpress API"
+    rescue Invoicexpress::UnprocessableEntity => e
+      logger.debug("Error: UnprocessableEntity")
+      status= e.response_body.errors.first
+    rescue Invoicexpress::Unauthorized => e
+      logger.debug("Error: Unauthorized")
+      status= e.response_body
+    rescue Invoicexpress::InternalServerError => e
+      logger.debug("Error: InternalServerError")
+      status= e.response_body
+    rescue Invoicexpress::NotFound => e
+      logger.debug("Error: NotFound")
+      status= e.response_body
     end  
 
     #return self.invoice_id
