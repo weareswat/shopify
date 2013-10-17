@@ -6,9 +6,7 @@ class Invoice < ActiveRecord::Base
 
   paginates_per 10
 
-  #before_create :create_invoice
-
-  #created invoice via invoicexpress
+  #creates a invoice via invoicexpress
   def create_invoicexpress()
     status  = true
     begin

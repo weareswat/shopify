@@ -1,11 +1,3 @@
-PATH
-  remote: vendor/gems/invoicexpress_temp
-  specs:
-    invoicexpress (0.0.0)
-      faraday (~> 0.8)
-      faraday_middleware (~> 0.9)
-      happymapper (~> 0.4)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -84,6 +76,10 @@ GEM
     httpi (1.1.1)
       rack
     i18n (0.6.1)
+    invoicexpress (0.0.0)
+      faraday (~> 0.8)
+      faraday_middleware (~> 0.9)
+      happymapper (~> 0.4)
     journey (1.0.4)
     jquery-rails (3.0.1)
       railties (>= 3.0, < 5.0)
@@ -171,11 +167,6 @@ GEM
       nokogiri (>= 1.4.0)
       nori (~> 1.1.0)
       wasabi (~> 2.5.0)
-    sentry-raven (0.5.0)
-      faraday (>= 0.7.6)
-      hashie (>= 1.1.0)
-      multi_json (~> 1.0)
-      uuidtools
     shopify-kaminari (0.1.0)
       kaminari (>= 0.12.4)
       shopify_api (>= 1.2.5)
@@ -209,7 +200,6 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    uuidtools (2.1.4)
     valvat (0.4.6)
       savon (= 1.2.0)
     wasabi (2.5.1)
@@ -226,7 +216,7 @@ DEPENDENCIES
   formtastic
   formtastic-bootstrap
   haml-rails
-  invoicexpress!
+  invoicexpress
   jquery-rails
   json (~> 1.8.0)
   kaminari
@@ -235,7 +225,6 @@ DEPENDENCIES
   pry
   rack-timeout
   rails (= 3.2.13)
-  sentry-raven
   shopify-kaminari
   shopify_app (= 4.1.1)
   sqlite3

@@ -1,0 +1,27 @@
+.hero-unit
+  %h1 Welcome
+  %p 
+    You're one step closer to sending invoices automaticaly on your shop using InvoiceXpress. We just need two pieces of information from your account. If you do not have one account, we offer a free trial.
+  %p
+    %a.btn.btn-large.btn-success{:href=>"http://www.invoicexpress.com/", :target=>'_blank'} Yes, I already have an account.
+    or
+    %a.btn.btn-large.btn-success{:href=>"http://www.invoicexpress.com/", :target=>'_blank'} No, I need to register at InvoiceXpress
+
+
+.progress.progress-stripped
+  .bar{:style=>'width:20%'}
+
+= semantic_form_for @shop, :html => { :class=>'form-vertical'} do |f| 
+  .row-fluid
+    .span6
+      .well
+        = f.input :invoice_user, :required => true, :input_html => {:class=>'input-xlarge'}, :hint=> 'Your InvoiceXpress User. Ex: http://SUBDOMAIN.invoicexpress.net', :label=>'InvoiceXpress Username' 
+        %p
+          %a.btn.btn-success{:href=>"#", :target=>'_blank'} Submit
+
+    .span6
+      .well
+        %p Need help? Copy the first part of your invoiceXpress URL. See the following example:
+        = image_tag 'screen1.png'
+
+  

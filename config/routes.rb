@@ -1,9 +1,10 @@
 Invoicexpress::Application.routes.draw do
   
   match 'welcome' => 'home#welcome'
-  match 'debug' => 'home#debug'
-  match 'setup' => 'home#setup'
-  match 'help' => 'help#index'
+  match 'debug'   => 'home#debug'
+  match 'setup'   => 'home#setup'
+  match 'help'    => 'help#index'
+  match 'wizard'  => 'wizard#step1'
 
   controller :sessions do
     get 'login' => :new
@@ -19,7 +20,7 @@ Invoicexpress::Application.routes.draw do
       post 'send_email'
     end
   end
+
   resources :webhooks
   resources :shops
-  
 end
