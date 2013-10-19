@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130731100041) do
+ActiveRecord::Schema.define(:version => 20131019113647) do
 
   create_table "invoices", :force => true do |t|
     t.integer  "order_id"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(:version => 20130731100041) do
     t.integer  "store_id"
     t.string   "token"
     t.boolean  "finalize_invoice",    :default => false
+    t.string   "country"
   end
 
   create_table "webhooks", :force => true do |t|
