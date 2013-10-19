@@ -32,6 +32,7 @@ gem 'haml-rails'
 gem 'invoicexpress'
 gem 'pry'
 gem 'sentry-raven'
+gem 'country_select'
 
 group :production do
   gem 'pg'

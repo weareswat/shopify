@@ -1,23 +1,14 @@
 %br
 %section#forms
-  - if !@shop.nil? && !@shop.invoicexpress_ready?
-    .hero-unit
-      %h1 Welcome
-      %p 
-        You're one step closer to sending invoices automaticaly on your shop using InvoiceXpress. We just need two pieces of information from your account. If you do not have one account, we offer a free trial.
-      %p
-        %a.btn.btn-large.btn-success{:href=>"http://www.invoicexpress.com/", :target=>'_blank'} Login or Register at InvoiceXpress
-  - else
-    .pull-right
-      %a.btn{ :href=> "#", :id=>'toursetup'} Help
-    .page-header
-      %h1 Setup
-
+  .pull-right
+    %a.btn{ :href=> "#", :id=>'toursetup'} Help
+  .page-header
+    %h1 Setup
   .row-fluid
     .span12
        
 
-      = semantic_form_for @shop, :html => { :class=>'form-horizontal'} do |f| 
+      = semantic_form_for @shop, :html => { :class=>'form-vertical'} do |f| 
         / %ul#myTab.nav.nav-tabs
         /   %li.active
         /     %a{:href=>'#api', "data-toggle"=>"tab"} 
