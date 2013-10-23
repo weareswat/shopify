@@ -14,7 +14,7 @@
       .span6
         = f.input :invoice_user, :required => true, :input_html => {:class=>'input-xlarge'}, :placeholder=>'Ex: http://SUBDOMAIN.invoicexpress.net', :hint=> '<a href="#how1" id="showme1" class="btn btn-small btn-info">Show me where to find my username</a>'.html_safe, :label=>'InvoiceXpress Username' 
         = f.input :invoice_api, :required => true, :input_html => {:class=>'input-xlarge'}, :placeholder=>'Ex: 00asdasdasdsasd1', :hint=>'<a href="#how2" id="showme2" class="btn btn-small btn-info">Show me how to get my API Key</a>'.html_safe, :label=>'InvoiceXpress API Key'
-        
+        = f.input  :country, as: :select, collection: country_options_for_select
         = f.action :submit, :as => :button, :label=>'Ready', :button_html =>{:class=>'btn btn-large btn-success', :disable_with => 'Wait...' }
 
       .span6

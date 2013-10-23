@@ -7,7 +7,7 @@ class ShopsController < ApplicationController
   end
 
   def update
-    @menu="dashboard"
+    @menu ="dashboard"
     @shop = Shop.find(params[:id])
       
     respond_to do |format|
