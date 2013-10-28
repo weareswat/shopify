@@ -87,9 +87,26 @@ class Invoice < ActiveRecord::Base
           :body => "Here's your invoice from the order #{self.order_number}. Thanks you for shopping with us. See you soon."
         )
         @client.invoice_email(self.invoice_id, message)
+        
+      rescue Faraday::Error::ConnectionFailed => e
+        logger.debug("ConnectionFailed with InvoiceXpress")
+        status= "Connection Failed with the InvoiceXpress API. Please try again or contact support if the error persists."
       rescue Invoicexpress::UnprocessableEntity => e
-        return e.response_body.errors.first    
-      end
+        logger.debug("Error: UnprocessableEntity")
+        status= e.response_body.errors.first
+      rescue Invoicexpress::Unauthorized => e
+        logger.debug("Error: Unauthorized")
+        status= e.response_body
+      rescue Invoicexpress::InternalServerError => e
+        logger.debug("Error: InternalServerError")
+        status= e.response_body
+      rescue Invoicexpress::NotFound => e
+        logger.debug("Error: NotFound")
+        status= e.response_body
+      rescue Faraday::Error::TimeoutError => e
+        status= "There was a timeout connecting with the InvoiceXpress API. Please try again or contact support if the error persists."
+      end  
+
       return true
     else
       return false

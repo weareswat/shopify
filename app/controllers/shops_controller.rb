@@ -7,7 +7,7 @@ class ShopsController < ApplicationController
   end
 
   def update
-    @menu="dashboard"
+    @menu ="dashboard"
     @shop = Shop.find(params[:id])
       
     respond_to do |format|
@@ -20,7 +20,7 @@ class ShopsController < ApplicationController
         format.json { head :no_content }
       else
         # format.html { render action: "edit" }
-        format.html{ redirect_to setup_path, alert: 'Could not validate information. Please verify API Key and Username is correct.' }
+        format.html{ redirect_to setup_path, alert: 'Could not validate information. Please verify API Key and Username is correct. You cannot create invoices without valid credentials.' }
         format.json { render json: @shop.errors, status: :unprocessable_entity }
       end
     end

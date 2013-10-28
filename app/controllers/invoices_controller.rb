@@ -6,16 +6,19 @@ class InvoicesController < ApplicationController
  
   def index
     if @shop.invoicexpress_ready? 
-      if @shop.invoicexpress_can_connect?
-        api_client    = @shop.get_invoicexpress_client  
-        api_invoices  = api_client.invoices(:page =>params[:page])
-        @invoices     = Kaminari.paginate_array(api_invoices.invoices, total_count: api_invoices.total_entries).page(api_invoices.current_page).per(api_invoices.per_page)
-        invoice_ids   = @invoices.map(&:id)
-        @db_invoices  = @shop.invoices.where(:invoice_id => invoice_ids)
-
-      else
-        @invoices=[]
-        @msg="Can't connect to InvoiceXpress. Please try again a bit later."
+      begin
+        if @shop.invoicexpress_can_connect?
+          api_client    = @shop.get_invoicexpress_client  
+          api_invoices  = api_client.invoices(:page =>params[:page])
+          @invoices     = Kaminari.paginate_array(api_invoices.invoices, total_count: api_invoices.total_entries).page(api_invoices.current_page).per(api_invoices.per_page)
+          invoice_ids   = @invoices.map(&:id)
+          @db_invoices  = @shop.invoices.where(:invoice_id => invoice_ids)
+        else
+          @invoices=[]
+          @msg="Can't connect to InvoiceXpress. Please try again a bit later."
+        end
+      rescue Timeout::Error
+        redirect_to trouble_path
       end
     else
       @invoices=[]
@@ -35,19 +38,19 @@ class InvoicesController < ApplicationController
         #fill general data
         #debugger
         @invoice=Invoice.new(
-          :store_url=> ShopifyAPI::Shop.current.domain, 
-          :order_id=> order.id,
-          :shop_id=> @shop.id, 
-          :order_number=> order.name,
-          :total=>  order.total_price, 
-          :email=>  order.email,
-          :name=> "#{order.customer.first_name} #{order.customer.last_name}"
+          :store_url=>      ShopifyAPI::Shop.current.domain, 
+          :order_id=>       order.id,
+          :shop_id=>        @shop.id, 
+          :order_number=>   order.name,
+          :total=>          order.total_price, 
+          :email=>          order.email,
+          :name=>           "#{order.customer.first_name} #{order.customer.last_name}"
           )
       else
         redirect_to root_path, :notice=>'That order does not exist.'
       end
     else
-      logger.debug("send_payment_information: No params sent or shop is nil #{@shop}")
+      #logger.debug("send_payment_information: No params sent or shop is nil #{@shop}")
       redirect_to root_path, :notice=>'No params sent or shop is nil'
     end
 
@@ -97,7 +100,11 @@ class InvoicesController < ApplicationController
 
   private
     def load_shop
-      @shop  = Shop.where(:store_url=>ShopifyAPI::Shop.current.domain).first
+      begin
+        @shop  = Shop.where(:store_url=>ShopifyAPI::Shop.current.domain).first
+      rescue Timeout::Error
+        redirect_to trouble_path
+      end
     end
 
 end

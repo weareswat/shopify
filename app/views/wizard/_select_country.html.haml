@@ -1,0 +1,6 @@
+= f.input  :country, as: :select, collection: country_options_for_select(@shop.country)
+#info_country.alert.alert-info{:class=>("hide" if @shop.country=='Portugal') }
+  %h4 
+    %b Attention!
+  If your country is not Portugal then you need to turn 'automatic' sequence On in InvoiceXpress in order to create invoices when a new order is paid.
+  %a.btn.btn-mini.btn-info{:href=>'#how3', :id=>'showme3'} Help

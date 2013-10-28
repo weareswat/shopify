@@ -7,22 +7,34 @@ class HomeController < ApplicationController
     @callback_url = "http://#{current_host}/login"
   end
   
+  def trouble
+  
+  end
+
   # get latest orders
   def index
-    init_shop
-    @orders = ShopifyAPI::Order.paginate per: 6, page: params[:page], params: {:order => "created_at DESC"}
-    order_ids   = @orders.map(&:id)
-    @db_invoices  = @shop.invoices.where(:order_id => order_ids)
+    begin
+      init_shop
+      @orders = ShopifyAPI::Order.paginate per: 6, page: params[:page], params: {:order => "created_at DESC"}
+      order_ids   = @orders.map(&:id)
+      @db_invoices  = @shop.invoices.where(:order_id => order_ids)
+    rescue Timeout::Error
+      redirect_to trouble_path
+    end
   end
 
   def setup
-    @shop=Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
+    begin
+      @shop     = Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
+    rescue Timeout::Error
+      redirect_to trouble_path
+    end
   end
   
   def debug
-    @shop=Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
-    @hooks= ShopifyAPI::Webhook.all
-    @webhooks= Webhook.where(:shop_url=>ShopifyAPI::Shop.current.domain).page params[:page]
+    @shop     = Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
+    @hooks    = ShopifyAPI::Webhook.all
+    @webhooks = Webhook.where(:shop_url=>ShopifyAPI::Shop.current.domain).page params[:page]
   end
 
   private
