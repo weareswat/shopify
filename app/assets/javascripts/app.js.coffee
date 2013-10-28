@@ -22,16 +22,31 @@ jQuery ->
   #
   # SETUP
   #
+
+  $("#shop_country").on 'change', ->
+    console.log("Handler for .change() called.")
+    console.log(this.value)
+    if(this.value!="Portugal")
+      $("#info_country").show("slow")
+    if(this.value=="Portugal")
+      $("#info_country").hide("fast")
+    false
+
   $('#showme1').on 'click', ->
+    $(".helpbox").hide()
     $("#how1").toggle('fast')
-    $("#how2").hide()
     false
 
   $('#showme2').on 'click', ->
+    $(".helpbox").hide()
     $("#how2").toggle('fast')
-    $("#how1").hide()
     false
   
+  $('#showme3').on 'click', ->
+    $(".helpbox").hide()
+    $("#how3").toggle('fast')
+    false
+
   $('.close').on 'click', ->
     $(this).parent().parent().toggle('fast')
     false

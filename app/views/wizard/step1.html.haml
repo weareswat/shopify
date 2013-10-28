@@ -14,24 +14,9 @@
       .span6
         = f.input :invoice_user, :required => true, :input_html => {:class=>'input-xlarge'}, :placeholder=>'Ex: http://SUBDOMAIN.invoicexpress.net', :hint=> '<a href="#how1" id="showme1" class="btn btn-small btn-info">Show me where to find my username</a>'.html_safe, :label=>'InvoiceXpress Username' 
         = f.input :invoice_api, :required => true, :input_html => {:class=>'input-xlarge'}, :placeholder=>'Ex: 00asdasdasdsasd1', :hint=>'<a href="#how2" id="showme2" class="btn btn-small btn-info">Show me how to get my API Key</a>'.html_safe, :label=>'InvoiceXpress API Key'
-        = f.input  :country, as: :select, collection: country_options_for_select
+        = render :partial=> "select_country", :locals=>{:f=>f}
         = f.action :submit, :as => :button, :label=>'Ready', :button_html =>{:class=>'btn btn-large btn-success', :disable_with => 'Wait...' }
 
       .span6
-        .hide#how1
-          %h3 Where to obtain your Username
-          %p Need help? Copy the first part of your invoiceXpress URL. See the following example:
-          = image_tag 'screen1.png'
-        .hide#how2
-          %h3 How to obtain your API Key
-          .row-fluid
-            .span6
-              %p 
-                1) In InvoiceXpress, go to 
-                %a{:ref=>""} Settings
-              %p 2) Click on API.
-              %p 3) Click on Activate Token.
-              %p 4) Copy the API key that shows up.
-            .span6
-              = image_tag 'screen2.png'
+        = render :partial=>'help'
           

@@ -5,6 +5,7 @@ Invoicexpress::Application.routes.draw do
   match 'setup'   => 'home#setup'
   match 'help'    => 'help#index'
   match 'wizard'  => 'wizard#step1'
+  match 'trouble' => 'home#trouble'
 
   controller :sessions do
     get 'login' => :new
@@ -12,8 +13,6 @@ Invoicexpress::Application.routes.draw do
     get 'auth/shopify/callback' => :show
     delete 'logout' => :destroy
   end
-
-  root :to => 'home#index'
 
   resources :invoices do
     member do
@@ -23,4 +22,7 @@ Invoicexpress::Application.routes.draw do
 
   resources :webhooks
   resources :shops
+
+  root :to => 'home#index'
+
 end

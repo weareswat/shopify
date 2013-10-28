@@ -20,6 +20,7 @@ class Shop < ActiveRecord::Base
         false
       end
     rescue Exception=>e
+      logger.debug e
       false
     end
   end
