@@ -90,7 +90,7 @@ class InvoicesController < ApplicationController
       if status==true
         redirect_to invoices_path, :notice=>'Sent Invoice to '+invoice.email
       else
-        status= "There was a problem sending the e-mail. Please try again or contact support." if status==false
+        
         redirect_to invoices_path(:page=>params[:page]), :alert=>"There was problem sending the email: #{status}."
       end
     else

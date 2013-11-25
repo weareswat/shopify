@@ -108,14 +108,14 @@ class Invoice < ActiveRecord::Base
         status= "There was a timeout connecting with the InvoiceXpress API. Please try again or contact support if the error persists."
       end  
 
-      unless status
-        return true
+      if status
+        return status
       else
-        return false
+        return true
       end
 
     else
-      return false
+      return "InternalServerError. Please try again or contact support."
     end
   end
   
