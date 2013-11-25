@@ -52,9 +52,9 @@
             %td
               - if db_invoice
                 - if invoice.status=="draft"
-                  = link_to 'E-mail Invoice to customer', send_email_invoice_path(db_invoice.id, :page=>params[:page]), :method=>:post, :confirm=>'Sending e-email will change the invoice state to Final. Do you want to continue?', :class=>"btn btn-success"
+                  = link_to 'E-mail Invoice to customer', send_email_invoice_path(db_invoice.id, :page=>params[:page]),   :confirm=>'Sending e-email will change the invoice state to Final. Do you want to continue?', :class=>"btn btn-success"
                 -else
-                  = link_to 'E-mail Invoice to customer', send_email_invoice_path(db_invoice.id, :page=>params[:page]), :method=>:post, :class=>"btn btn-success"
+                  = link_to 'E-mail Invoice to customer', send_email_invoice_path(db_invoice.id, :page=>params[:page]),  :class=>"btn btn-success"
               - else
                 %p.muted No actions available
     = paginate @invoices, :theme=>'twitter-bootstrap'

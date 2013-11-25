@@ -1,6 +1,6 @@
 = f.input  :country, as: :select, collection: country_options_for_select(@shop.country)
-#info_country.alert.alert-info{:class=>("hide" if @shop.country=='Portugal') }
+#info_country.alert.alert-info{:class=>("hide" if @shop.country=='Portugal' || @shop.country==nil) }
   %h4 
     %b Attention!
-  If your country is not Portugal then you need to turn 'automatic' sequence On in InvoiceXpress in order to create invoices when a new order is paid.
-  %a.btn.btn-mini.btn-info{:href=>'#how3', :id=>'showme3'} Help
+  If your country is not Portugal, in order to create automatic invoices when a new order is paid, you need to do the following in InvoiceXpress:
+  %p Your <b>Sequence Numbering</b> must be <b>Automatic</b>. Go to Settings > Accounts and set <b>Sequence Numbering</b> to <b>Automatic</b>

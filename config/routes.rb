@@ -16,7 +16,7 @@ Invoicexpress::Application.routes.draw do
 
   resources :invoices do
     member do
-      post 'send_email'
+      get 'send_email'
     end
   end
 
