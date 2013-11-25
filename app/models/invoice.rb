@@ -71,7 +71,8 @@ class Invoice < ActiveRecord::Base
   def send_email
     @client = get_invoicexpress_client()
     invoice       = nil
-    
+    status        = nil
+
     if self.invoice_id
       invoice = @client.invoice(self.invoice_id)
       begin
@@ -107,7 +108,12 @@ class Invoice < ActiveRecord::Base
         status= "There was a timeout connecting with the InvoiceXpress API. Please try again or contact support if the error persists."
       end  
 
-      return true
+      unless status
+        return true
+      else
+        return false
+      end
+
     else
       return false
     end
