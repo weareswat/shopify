@@ -48,7 +48,7 @@ class HomeController < ApplicationController
         @shop.token=session["shopify"].token
         @shop.save
       end
-    
+      init_webhooks
     else
       
       @shop           = Shop.new(:name => ShopifyAPI::Shop.current.name, :store_url => ShopifyAPI::Shop.current.domain)
@@ -73,13 +73,18 @@ class HomeController < ApplicationController
       #address="http://shopinvoicexpress.herokuapp.com/webhooks"
       address="http://invoicexpress-shopify.herokuapp.com/webhooks"
     end  
-
-    webhook = ShopifyAPI::Webhook.create(:format => "json",  :topic => "orders/paid", :address => address)
-    if webhook.valid?
-      logger.debug("oh Webhook invalid: #{webhook.errors}")
+    exist_webhook = ShopifyAPI::Webhook.find :all, :params => {:address=>address}
+    if exist_webhook && exist_webhook.size>0
+      logger.debug("oh Webhook already exists")
     else
-      logger.debug('Created webhook')
+      webhook = ShopifyAPI::Webhook.create(:format => "json",  :topic => "orders/paid", :address => address)
+      
+      if webhook.valid?
+        logger.debug("oh Webhook invalid: #{webhook.errors}")
+      else
+        logger.debug('Created webhook')
+      end
     end
-    
+
   end
 end
