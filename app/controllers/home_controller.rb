@@ -70,9 +70,11 @@ class HomeController < ApplicationController
       address="https://thinkorange.pagekite.me/webhooks"
     else
       #TODO add staging env
-      #address="http://shopinvoicexpress.herokuapp.com/webhooks"
-      address="http://invoicexpress-shopify.herokuapp.com/webhooks"
+      address="http://shopinvoicexpress.herokuapp.com/webhooks"
+      #address="http://invoicexpress-shopify.herokuapp.com/webhooks"
     end  
+
+
     exist_webhook = ShopifyAPI::Webhook.find :all, :params => {:address=>address}
     if exist_webhook && exist_webhook.size>0
       logger.debug("oh Webhook already exists")
