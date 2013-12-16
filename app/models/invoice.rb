@@ -13,9 +13,11 @@ class Invoice < ActiveRecord::Base
       @client = get_invoicexpress_client()
       order   = ShopifyAPI::Order.find(self.order_id)
       store   = ShopifyAPI::Shop.current
-      date    = get_ix_date(order.created_at)
-      state   = Invoicexpress::Models::InvoiceState.new(:state => "finalized")
       
+      #date    = get_ix_date(order.created_at)
+      date    = get_ix_date Date.today
+      state   = Invoicexpress::Models::InvoiceState.new(:state => "finalized")
+      steam
       #items leave it like this for now for debugging issues
       items=[]
       line_items      = get_line_items(order, store.taxes_included)
