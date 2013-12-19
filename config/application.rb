@@ -54,11 +54,11 @@ module Invoicexpress
     # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
     # parameters by using an attr_accessible or attr_protected declaration.
     config.active_record.whitelist_attributes = true
-
-    # Enable the asset pipeline
+    config.assets.initialize_on_precompile = false
     config.assets.enabled = true
+    config.assets.paths << Rails.root.join("app", 'assets', 'fonts')
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
+    config.assets.version = '2.0'
   end
 end
