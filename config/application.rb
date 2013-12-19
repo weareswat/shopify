@@ -11,12 +11,8 @@ end
 
 module Invoicexpress
   class Application < Rails::Application
-    
-    # Shopify API connection credentials:
-    # Use these for http://localhost:5000/login
-    config.shopify.api_key = "375e843695e2fb07d54fe379cbe28620"
-    config.shopify.secret = "d0e2278eac5b8ff54bd93169a6494b20"
-    
+
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -58,11 +54,11 @@ module Invoicexpress
     # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
     # parameters by using an attr_accessible or attr_protected declaration.
     config.active_record.whitelist_attributes = true
-
-    # Enable the asset pipeline
+    config.assets.initialize_on_precompile = false
     config.assets.enabled = true
+    config.assets.paths << Rails.root.join("app", 'assets', 'fonts')
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
+    config.assets.version = '2.0'
   end
 end

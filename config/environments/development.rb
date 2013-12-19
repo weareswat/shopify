@@ -1,6 +1,12 @@
 Invoicexpress::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  # Shopify API connection credentials:
+  # Use these for http://localhost:5000/login
+  config.shopify.api_key = "375e843695e2fb07d54fe379cbe28620"
+  config.shopify.secret = "d0e2278eac5b8ff54bd93169a6494b20"
+
+
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
