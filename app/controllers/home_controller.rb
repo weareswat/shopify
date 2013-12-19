@@ -1,14 +1,14 @@
 class HomeController < ApplicationController
-  
+
   around_filter :shopify_session, :except => 'welcome'
 
   def welcome
     current_host = "#{request.host}#{':' + request.port.to_s if request.port != 80}"
     @callback_url = "http://#{current_host}/login"
   end
-  
+
   def trouble
-  
+
   end
 
   # get latest orders
@@ -30,7 +30,7 @@ class HomeController < ApplicationController
       redirect_to trouble_path
     end
   end
-  
+
   def debug
     @shop     = Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
     @hooks    = ShopifyAPI::Webhook.all
@@ -43,16 +43,16 @@ class HomeController < ApplicationController
     if Shop.where(:store_url => ShopifyAPI::Shop.current.domain).exists?
 
       @shop=Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
-      
+
       if session["shopify"] && session["shopify"].token != @shop.token
         @shop.token=session["shopify"].token
         @shop.save
       end
       init_webhooks
     else
-      
+
       @shop           = Shop.new(:name => ShopifyAPI::Shop.current.name, :store_url => ShopifyAPI::Shop.current.domain)
-      @shop.token     = session["shopify"].token if session["shopify"] 
+      @shop.token     = session["shopify"].token if session["shopify"]
       @shop.email     = ShopifyAPI::Shop.current.email
       @shop.store_id  = ShopifyAPI::Shop.current.id
       @shop.save
@@ -62,17 +62,17 @@ class HomeController < ApplicationController
       redirect_to wizard_path()
     end
   end
-  
+
   def init_webhooks
     #change this in production!
     #address=""
     if Rails.env.development?
       address="https://thinkorange.pagekite.me/webhooks"
+    elsif Rails.env.staging?
+      address="http://shopinvoicexpress.herokuapp.co/webhooks"
     else
-      #TODO add staging env
-      #address="http://shopinvoicexpress.herokuapp.com/webhooks"
       address="http://invoicexpress-shopify.herokuapp.com/webhooks"
-    end  
+    end
 
 
     exist_webhook = ShopifyAPI::Webhook.find :all, :params => {:address=>address}
@@ -80,7 +80,6 @@ class HomeController < ApplicationController
       logger.debug("oh Webhook already exists")
     else
       webhook = ShopifyAPI::Webhook.create(:format => "json",  :topic => "orders/paid", :address => address)
-      
       if webhook.valid?
         logger.debug("oh Webhook invalid: #{webhook.errors}")
       else
@@ -89,4 +88,5 @@ class HomeController < ApplicationController
     end
 
   end
+
 end

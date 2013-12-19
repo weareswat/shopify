@@ -13,17 +13,17 @@ class Invoice < ActiveRecord::Base
       @client = get_invoicexpress_client()
       order   = ShopifyAPI::Order.find(self.order_id)
       store   = ShopifyAPI::Shop.current
-      
+
       #date    = get_ix_date(order.created_at)
-      date    = get_ix_date Date.today
+      date    = Date.today
       state   = Invoicexpress::Models::InvoiceState.new(:state => "finalized")
-      steam
+
       #items leave it like this for now for debugging issues
       items=[]
       line_items      = get_line_items(order, store.taxes_included)
       shipping_items  = get_shipping(order, store.taxes_included, store.tax_shipping)
       items           = line_items+shipping_items
-      
+
       new_invoice = Invoicexpress::Models::Invoice.new(
         :date         => date,
         :due_date     => date,
@@ -45,7 +45,7 @@ class Invoice < ActiveRecord::Base
         #most probable cause: Date can not be before last sent invoice of this sequence
         @client.update_invoice_state(new_invoice.id, state)
       end
-      
+
       #add_metafield(order)
     rescue Faraday::Error::ConnectionFailed => e
       logger.debug("ConnectionFailed with InvoiceXpress")
@@ -64,12 +64,12 @@ class Invoice < ActiveRecord::Base
       status= e.response_body
     rescue Faraday::Error::TimeoutError => e
       status= "There was a timeout connecting with the InvoiceXpress API. Please try again or contact support if the error persists."
-    end  
+    end
 
     #return self.invoice_id
     return status
   end
-  
+
   def send_email
     @client = get_invoicexpress_client()
     invoice       = nil
@@ -90,7 +90,7 @@ class Invoice < ActiveRecord::Base
           :body => "Here's your invoice from the order #{self.order_number}. Thanks you for shopping with us. See you soon."
         )
         @client.invoice_email(self.invoice_id, message)
-        
+
       rescue Faraday::Error::ConnectionFailed => e
         logger.debug("ConnectionFailed with InvoiceXpress")
         status= "Connection Failed with the InvoiceXpress API. Please try again or contact support if the error persists."
@@ -108,7 +108,7 @@ class Invoice < ActiveRecord::Base
         status= e.response_body
       rescue Faraday::Error::TimeoutError => e
         status= "There was a timeout connecting with the InvoiceXpress API. Please try again or contact support if the error persists."
-      end  
+      end
 
       if status
         return status
@@ -120,11 +120,11 @@ class Invoice < ActiveRecord::Base
       return "InternalServerError. Please try again or contact support."
     end
   end
-  
-  # returns true or false if the invoice is valid for passing final state 
+
+  # returns true or false if the invoice is valid for passing final state
   def should_finalize_invoice?(order, invoicexpress_invoice)
     nif_is_valid  = false
-     
+
     if invoicexpress_invoice.client && invoicexpress_invoice.client.fiscal_id
       nif_is_valid= validate_fiscal_id(invoicexpress_invoice.client.fiscal_id)
     # elsif order.note_attributes && order.note_attributes.size>0
@@ -144,7 +144,7 @@ class Invoice < ActiveRecord::Base
         @client.accounts
         authorized=true
       rescue Invoicexpress::Unauthorized => e
-        puts e.response_body 
+        puts e.response_body
       end
       authorized
     end
@@ -184,7 +184,7 @@ class Invoice < ActiveRecord::Base
             :quantity => line_item.quantity,
             :unit => "unit"
           )
-          if order.tax_lines!=nil && order.tax_lines.size>0 
+          if order.tax_lines!=nil && order.tax_lines.size>0
             new_item.tax=get_tax(order.tax_lines.first.rate)
           end
           items << new_item
@@ -206,7 +206,7 @@ class Invoice < ActiveRecord::Base
             :unit => "unit"
           )
           #should we calculate tax on shipping?
-          if tax_shipping==true && order.tax_lines!=nil && order.tax_lines.size>0 
+          if tax_shipping==true && order.tax_lines!=nil && order.tax_lines.size>0
             new_item.unit_price=get_price(item.price.to_f, taxes_included, order.tax_lines)
             new_item.tax=get_tax(order.tax_lines.first.rate)
           end
@@ -218,7 +218,7 @@ class Invoice < ActiveRecord::Base
 
     # returns a Invoicexpress::Models::Tax model for the corresponding shopify tax
     def get_tax(tax_value)
-      return nil if tax_value.nil? 
+      return nil if tax_value.nil?
       tax_full = tax_value*100
       taxes    = @client.taxes
       ix_tax   = nil
@@ -226,7 +226,7 @@ class Invoice < ActiveRecord::Base
       taxes.each do |tax|
         ix_tax=tax if tax.value==tax_full
       end
-      
+
       if ix_tax.nil?
         model_tax = Invoicexpress::Models::Tax.new({
         :name        => "VAT#{tax_full.round}",
@@ -267,7 +267,7 @@ class Invoice < ActiveRecord::Base
       end
       tax_exemption
     end
-    
+
     # gets date in invoicexpress format
     def get_ix_date(date)
       date=Date.parse date
@@ -298,7 +298,7 @@ class Invoice < ActiveRecord::Base
 
         if note_attributes && note_attributes.size>0
           note_attributes.each do |attr|
-            if attr.name == "vat_number" 
+            if attr.name == "vat_number"
               if Valvat.new(attr.value).valid?
                 client.fiscal_id = Valvat::Utils.split(attr.value).last
                 # client.fiscal_id = attr.value

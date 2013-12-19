@@ -2,7 +2,7 @@
 %section#help
   %header
     %h1 Help
-  
+
   .row-fluid
     .span4
       .sidebar-nav
@@ -14,9 +14,9 @@
             %li
               %a{:href => "#2"} What happens when a order is paid?
             %li
-              %a{:href => "#3"} What happens when there is no VAT Number? 
+              %a{:href => "#3"} What happens when there is no VAT Number?
             %li
-              %a{:href => "#31"} Will this app send automatic invoices when a order ir paid? 
+              %a{:href => "#31"} Will this app send automatic invoices when a order ir paid?
             %li
               %a{:href => "#4"} How can I add a VAT Number field to my order?
             %li
@@ -39,22 +39,23 @@
         %h2 What happens when a order is paid?
         %p We send out the information to your InvoiceXpress account and create an invoice. Several things can happen:
         %ul
-          %li If the order items or the shipping has no taxes we apply a VAT isent code. 
+          %li If the order items or the shipping has no taxes we apply a VAT isent code.
           %li If there is no Tax rule in InvoiceXpress that matches the amount in Shopify we create one.
           %li If the client does not exist in InvoiceXpress with that name, we create one. From there on we use the information about this client from InvoiceXpress.
           %li If there is no product in InvoiceXpress matching the description of your product then we create one as well.
+          %li The date in the invoice will be the creation date for the invoice. This is to allow creation of invoices for older orders.
         %hr
       %article#3
-        %h2 What happens when there is no VAT Number? 
-        %p The invoice will have a 9999990 vat number.
+        %h2 What happens when there is no VAT Number?
+        %p The invoice will have a 9999999 vat number.
         %hr
       %article#31
         %h2 Will this app send automatic invoices when a order ir paid?
         %p Yes. When a order is paid, InvoiceXpress sends an automatic e-mail to your customer.
-        %p 
-          Attention: In order to create invoices your 
-          %b Sequence Numbering must be Automatic. 
-          Go to Settings > Accounts and set 
+        %p
+          Attention: In order to create invoices your
+          %b Sequence Numbering must be Automatic.
+          Go to Settings > Accounts and set
           %b Sequence Numbering to Automatic.
         %hr
       %article#4
@@ -78,7 +79,7 @@
         %hr
       %article#61
         %h2 Does this app support taxes?
-        %p Yes. If an order has taxes, then it will try to match the tax value in Shopify with Taxes created in InvoiceXpress (under settings -> tax). If a Tax does not exist, it will be created automaticaly using the value from Shopify. 
+        %p Yes. If an order has taxes, then it will try to match the tax value in Shopify with Taxes created in InvoiceXpress (under settings -> tax). If a Tax does not exist, it will be created automaticaly using the value from Shopify.
         %p If an order does not have taxes then it's required to give a reason for exemption, we're using the code M08 (IVA – Autoliquidação).
         %hr
       %article#7
