@@ -25,24 +25,24 @@ class HomeController < ApplicationController
 
   def setup
     begin
-      @shop     = Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
+      @shop     = Shop.where(:store_url => ShopifyAPI::Shop.current.myshopify_domain).first
     rescue Timeout::Error
       redirect_to trouble_path
     end
   end
 
   def debug
-    @shop     = Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
+    @shop     = Shop.where(:store_url => ShopifyAPI::Shop.current.myshopify_domain).first
     @hooks    = ShopifyAPI::Webhook.all
-    @webhooks = Webhook.where(:shop_url=>ShopifyAPI::Shop.current.domain).page params[:page]
+    @webhooks = Webhook.where(:shop_url=> ShopifyAPI::Shop.current.myshopify_domain).page params[:page]
   end
 
   private
   def init_shop
     #debugger
-    if Shop.where(:store_url => ShopifyAPI::Shop.current.domain).exists?
+    if Shop.where(:store_url => ShopifyAPI::Shop.current.myshopify_domain).exists?
 
-      @shop=Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
+      @shop=Shop.where(:store_url => ShopifyAPI::Shop.current.myshopify_domain).first
 
       if session["shopify"] && session["shopify"].token != @shop.token
         @shop.token=session["shopify"].token
@@ -51,7 +51,7 @@ class HomeController < ApplicationController
       init_webhooks
     else
 
-      @shop           = Shop.new(:name => ShopifyAPI::Shop.current.name, :store_url => ShopifyAPI::Shop.current.domain)
+      @shop           = Shop.new(:name => ShopifyAPI::Shop.current.name, :store_url => ShopifyAPI::Shop.current.myshopify_domain)
       @shop.token     = session["shopify"].token if session["shopify"]
       @shop.email     = ShopifyAPI::Shop.current.email
       @shop.store_id  = ShopifyAPI::Shop.current.id
@@ -69,7 +69,7 @@ class HomeController < ApplicationController
     if Rails.env.development?
       address="https://thinkorange.pagekite.me/webhooks"
     elsif Rails.env.staging?
-      address="http://shopinvoicexpress.herokuapp.co/webhooks"
+      address="http://shopinvoicexpress.herokuapp.com/webhooks"
     else
       address="http://invoicexpress-shopify.herokuapp.com/webhooks"
     end
