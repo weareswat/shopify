@@ -6,6 +6,21 @@ production is for the final production server.
 
 Use foreman start to boot your server localy.
 
+store_url = "somusicaportuguesa.myshopify.com"
+store_token = "936df7b6886812b9466e163ae1981487"
+
+session = ShopifyAPI::Session.new(store_url, store_token)
+session.valid?
+ShopifyAPI::Base.activate_session(session)
+
+
+store_url = "shop-translator-staging.myshopify.com"
+store_token = "29067285896ea472a5806cbf506f253f"
+
+session = ShopifyAPI::Session.new(store_url, store_token)
+session.valid?
+ShopifyAPI::Base.activate_session(session)
+
 
 === Useful
 
