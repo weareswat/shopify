@@ -30,7 +30,8 @@
         %tr
           %td.primary
             = link_to order.name, "https://#{shop_session.url}/admin/orders/#{order.id}", :target => 'blank'
-          %td = customer_name_helper(order)
+          %td
+            =customer_name_helper(order)
           %td
             %span.label{:class=>orderStatus(order)}
               = order.financial_status

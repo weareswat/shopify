@@ -4,7 +4,10 @@ class WizardController < ApplicationController
   def step1
     begin
       @menu = "Wizard"
-      @shop = Shop.where(:store_url => ShopifyAPI::Shop.current.domain).first
+      @shop  = Shop.where(:store_url=>ShopifyAPI::Shop.current.myshopify_domain).first
+      if @shop.nil?
+        @shop  = Shop.where(:store_url=>ShopifyAPI::Shop.current.domain).first
+      end
     rescue Timeout::Error
       redirect_to trouble_path
     end
