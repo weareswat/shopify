@@ -13,7 +13,9 @@ class Invoice < ActiveRecord::Base
       @client = get_invoicexpress_client()
       order   = ShopifyAPI::Order.find(self.order_id)
       store   = ShopifyAPI::Shop.current
-      date    = get_ix_date(order.created_at)
+
+      #date    = get_ix_date(order.created_at)
+      date    = Date.today
       state   = Invoicexpress::Models::InvoiceState.new(:state => "finalized")
 
       #items leave it like this for now for debugging issues
@@ -23,7 +25,6 @@ class Invoice < ActiveRecord::Base
       items           = line_items+shipping_items
 
       return "Order does not have a customer. Cannot print out a invoice." unless order.respond_to?(:customer)
-
       new_invoice = Invoicexpress::Models::Invoice.new(
         :date         => date,
         :due_date     => date,

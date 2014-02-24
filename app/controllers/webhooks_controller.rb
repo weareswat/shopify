@@ -8,16 +8,17 @@ class WebhooksController < ApplicationController
     #data = ActiveSupport::JSON.decode(request.body.read)
     #debugger
     if !request.nil? && request.filtered_parameters["id"]!=nil
-      shop=Shop.where(:store_url => request.headers['x-shopify-shop-domain']).first
+      shop = Shop.where(:store_url => request.headers['x-shopify-shop-domain']).first
 
       #save this for backup
       webhook=Webhook.new(:params=>request.filtered_parameters, :security=>request.headers['HTTP_X_SHOPIFY_HMAC_SHA256'], :shop_url=>request.headers['x-shopify-shop-domain'],  :order_id=>request.filtered_parameters["id"])
       webhook.save
 
       unless shop.nil?
-        session = ShopifyAPI::Session.new(shop.store_url, shop.token)
+        session = ShopifyAPI::Session.new(request.headers['x-shopify-shop-domain'], request.filtered_parameters["token"])
         ShopifyAPI::Base.activate_session(session)
-        order=ShopifyAPI::Order.find( request.filtered_parameters["id"] )
+         
+        order = ShopifyAPI::Order.find( request.filtered_parameters["id"] )
         
         if send_to_invoicexpress(shop, order, webhook)
           head :ok
@@ -25,6 +26,7 @@ class WebhooksController < ApplicationController
           #something went wrong ho ho
           render status: 500
         end
+
       else
         #no shop found
         render status: 404
@@ -39,7 +41,9 @@ class WebhooksController < ApplicationController
 
   #note: could this be on a module? or in the model?
   def send_to_invoicexpress(shop, order, webhook)
+
     existing_invoices = Invoice.where(:order_id=>order.id)
+
     if existing_invoices && existing_invoices.size>0
       true
     else
@@ -53,6 +57,7 @@ class WebhooksController < ApplicationController
         :name=>         "#{order.customer.first_name} #{order.customer.last_name}"
       )
       invoice.create_invoicexpress()
+
       if invoice.save
         invoice.send_email if shop.auto_send_email==true
         #complete this information if possible

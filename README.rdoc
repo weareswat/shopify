@@ -1,6 +1,30 @@
+=== Notes from pedro
+
+development environment is for local dev.
+staging is for the shopinvoicexpress.herokuapp.com app
+production is for the final production server.
+
+Use foreman start to boot your server localy.
+
+store_url = "somusicaportuguesa.myshopify.com"
+store_token = "936df7b6886812b9466e163ae1981487"
+
+session = ShopifyAPI::Session.new(store_url, store_token)
+session.valid?
+ShopifyAPI::Base.activate_session(session)
+
+
+store_url = "shop-translator-staging.myshopify.com"
+store_token = "29067285896ea472a5806cbf506f253f"
+
+session = ShopifyAPI::Session.new(store_url, store_token)
+session.valid?
+ShopifyAPI::Base.activate_session(session)
+
+
 === Useful
 
-rails console
+How to connect to Invoicexcpress api and Shopify from the rails console
 
 @client = Invoicexpress::Client.new(
   :screen_name => "thinkorangeteste",
@@ -15,15 +39,16 @@ shop = ShopifyAPI::Shop.current
 #desconto total 5 eruos
 order=ShopifyAPI::Order.find(173262381)
 
+=== Example test account
+
 http://flatley-farrell8724.myshopify.com
 info@thinkorange.pt
 oranges*
 
-
 front:
 whewya
 
-=== InvoiceXpress
+=== InvoiceXpress test account
 
 thinkorangeteste
 85635b50ef504e64144d2a666f248c7ff96403f1
@@ -44,12 +69,13 @@ Card security code
 curl -s https://pagekite.net/pk/ |sudo bash
 
 2) use pagekite
-pagekite.py 3000 thinkorange.pagekite.me
+pagekite.py 5000 thinkorange.pagekite.me
 
 === Heroku logs
 
 heroku addons:open papertrail
 
+=== Other sessions
 
   store_url   = "shop-translator-staging.myshopify.com"
   store_token = "ad619d63ee7780d51858d7618df14fba"
@@ -67,7 +93,6 @@ heroku addons:open papertrail
   session     = ShopifyAPI::Session.new(store_url, store_token)
   ShopifyAPI::Base.activate_session(session)
 
-#
   store_url   = "my-whey.myshopify.com"
   store_token = "29991d2ccfe1d0e0624ba6fd50eaa2a1"
   session     = ShopifyAPI::Session.new(store_url, store_token)
