@@ -12,7 +12,7 @@
         .alert.alert-block
           %h4.alert-heading Welcome
           %p Your store doesn't have any orders.
-  
+
   -else
     %table#orders_table.table.full-section.table-hover
       %thead
@@ -30,11 +30,11 @@
         %tr
           %td.primary
             = link_to order.name, "https://#{shop_session.url}/admin/orders/#{order.id}", :target => 'blank'
-          %td=order.billing_address.name
+          %td = customer_name_helper(order)
           %td
             %span.label{:class=>orderStatus(order)}
               = order.financial_status
-          %td 
+          %td
             %span.label{:class=>orderFulfilmentStatus(order)}
               = orderFulfilmentLabel(order)
           %td
@@ -44,7 +44,7 @@
             - else
               %span.label.label-warning
                 No
-          %td 
+          %td
             = order.total_price
             = order.currency
           %td
@@ -54,4 +54,3 @@
               %a{:href=>"https://#{@shop.invoice_user}.invoicexpress.net/invoices/#{db_invoice.invoice_id}", :target=>'blank', :class=>'btn btn-success'} Open in InvoiceXpress
 
     = paginate @orders, :theme=>'twitter-bootstrap'
-                 
