@@ -93,6 +93,10 @@ heroku addons:open papertrail
   session     = ShopifyAPI::Session.new(store_url, store_token)
   ShopifyAPI::Base.activate_session(session)
 
+  store_url   = "my-whey.myshopify.com"
+  store_token = "29991d2ccfe1d0e0624ba6fd50eaa2a1"
+  session     = ShopifyAPI::Session.new(store_url, store_token)
+  ShopifyAPI::Base.activate_session(session)
 
 
 

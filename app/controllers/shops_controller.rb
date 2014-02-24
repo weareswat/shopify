@@ -1,20 +1,20 @@
 class ShopsController < ApplicationController
 
   around_filter :shopify_session
-  
+
   def edit
-  
+
   end
 
   def update
     @menu ="dashboard"
     @shop = Shop.find(params[:id])
-      
+
     respond_to do |format|
-      if @shop.store_url!=ShopifyAPI::Shop.current.domain
+      if @shop.store_url!=ShopifyAPI::Shop.current.myshopify_domain
         format.html { redirect_to root_url, notice: 'Not your store mate!'  }
       end
-      
+
       if @shop.update_attributes(params[:shop]) && @shop.invoicexpress_can_connect?
         format.html { redirect_to root_url, notice: 'Shop information was successfully updated.' }
         format.json { head :no_content }
@@ -25,5 +25,5 @@ class ShopsController < ApplicationController
       end
     end
   end
-  
+
 end

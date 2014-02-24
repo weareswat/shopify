@@ -3,12 +3,12 @@ class InvoicesController < ApplicationController
   around_filter :shopify_session
   before_filter :load_shop
 
- 
+
   def index
-    if @shop.invoicexpress_ready? 
+    if @shop.invoicexpress_ready?
       begin
         if @shop.invoicexpress_can_connect?
-          api_client    = @shop.get_invoicexpress_client  
+          api_client    = @shop.get_invoicexpress_client
           api_invoices  = api_client.invoices(:page =>params[:page])
           @invoices     = Kaminari.paginate_array(api_invoices.invoices, total_count: api_invoices.total_entries).page(api_invoices.current_page).per(api_invoices.per_page)
           invoice_ids   = @invoices.map(&:id)
@@ -38,11 +38,11 @@ class InvoicesController < ApplicationController
         #fill general data
         #debugger
         @invoice=Invoice.new(
-          :store_url=>      ShopifyAPI::Shop.current.domain, 
+          :store_url=>      ShopifyAPI::Shop.current.domain,
           :order_id=>       order.id,
-          :shop_id=>        @shop.id, 
+          :shop_id=>        @shop.id,
           :order_number=>   order.name,
-          :total=>          order.total_price, 
+          :total=>          order.total_price,
           :email=>          order.email,
           :name=>           "#{order.customer.first_name} #{order.customer.last_name}"
           )
@@ -56,7 +56,7 @@ class InvoicesController < ApplicationController
 
   end
 
-  # manually creates 
+  # manually creates
   def create
     if @shop && params[:invoice]
       @invoice = Invoice.new(params[:invoice])
@@ -80,7 +80,7 @@ class InvoicesController < ApplicationController
       render :new, :alert=>'No params sent or shop is nil'
     end
   end
-  
+
   def send_email
     invoice   = Invoice.find(params[:id])
 
@@ -90,18 +90,22 @@ class InvoicesController < ApplicationController
       if status==true
         redirect_to invoices_path, :notice=>'Sent Invoice to '+invoice.email
       else
-        
+
         redirect_to invoices_path(:page=>params[:page]), :alert=>"There was problem sending the email: #{status}."
       end
     else
       redirect_to invoices_path, :alert=>'No params sent or shop is nil'
-    end  
+    end
   end
 
   private
     def load_shop
       begin
-        @shop  = Shop.where(:store_url=>ShopifyAPI::Shop.current.domain).first
+        @shop  = Shop.where(:store_url=>ShopifyAPI::Shop.current.myshopify_domain).first
+        if @shop.nil?
+          @shop  = Shop.where(:store_url=>ShopifyAPI::Shop.current.domain).first
+        end
+
       rescue Timeout::Error
         redirect_to trouble_path
       end

@@ -24,6 +24,7 @@ class Invoice < ActiveRecord::Base
       shipping_items  = get_shipping(order, store.taxes_included, store.tax_shipping)
       items           = line_items+shipping_items
 
+      return "Order does not have a customer. Cannot print out a invoice." unless order.respond_to?(:customer)
       new_invoice = Invoicexpress::Models::Invoice.new(
         :date         => date,
         :due_date     => date,
