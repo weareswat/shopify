@@ -21,9 +21,9 @@ Invoicexpress::Application.configure do
   config.assets.digest = true
 
   #these are for InvoiceXpress in production
-  config.shopify.api_key = "1bad1d3eedf4115932cdb2f50d2d43f7"
-  config.shopify.secret = "bbee870790fee7d81aaf06836c602f34"
-  
+  config.shopify.api_key = ENV['SHOPIFY_API_KEY']
+  config.shopify.secret = ENV['SHOPIFY_SECRET']
+
 
   # Defaults to nil and saved in location specified by config.assets.prefix
   # config.assets.manifest = YOUR_PATH
@@ -66,7 +66,7 @@ Invoicexpress::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
   config.assets.precompile += %w( font-awesome-ie7.min.css )
-  
+
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5

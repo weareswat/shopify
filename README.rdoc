@@ -1,18 +1,24 @@
-=== Notes from pedro
+=== What's this?
+
+InvoiceXpress source-code for Shopify Plugin.
+
+=== Random Notes from Pedro
 
 development environment is for local dev.
 staging is for the shopinvoicexpress.herokuapp.com app
 production is for the final production server.
 
 Use foreman start to boot your server localy.
+Create a .env file in your project root and add the following:
+RACK_ENV=development
+PORT=5000
+SHOPIFY_API_KEY="blabla"
+SHOPIFY_SECRET="blablabla"
 
-store_url = "somusicaportuguesa.myshopify.com"
-store_token = "936df7b6886812b9466e163ae1981487"
+You need to get a shopify key and secret.
+You need a invoicexpress user and secret.
 
-session = ShopifyAPI::Session.new(store_url, store_token)
-session.valid?
-ShopifyAPI::Base.activate_session(session)
-
+=== Start a Shopify Session in the Rails console
 
 store_url = "shop-translator-staging.myshopify.com"
 store_token = "29067285896ea472a5806cbf506f253f"
@@ -21,41 +27,17 @@ session = ShopifyAPI::Session.new(store_url, store_token)
 session.valid?
 ShopifyAPI::Base.activate_session(session)
 
-
-=== Useful
-
-How to connect to Invoicexcpress api and Shopify from the rails console
+=== How to connect to Invoicexcpress api and Shopify from the rails console:
 
 @client = Invoicexpress::Client.new(
-  :screen_name => "thinkorangeteste",
-  :api_key     => "85635b50ef504e64144d2a666f248c7ff96403f1x",
+  :screen_name => "invoicexpressuser",
+  :api_key     => "apikey",
   #:proxy       => "http://127.0.0.1:9999"
 )
 
-
-ShopifyAPI::Base.site = 'https://447aa894bc1f575eb07cd5a43a9dccdc:31c5f5b26b6f1cf212f8a91a227cb7ff@flatley-farrell8724.myshopify.com/admin'
-shop = ShopifyAPI::Shop.current
-
-#desconto total 5 eruos
-order=ShopifyAPI::Order.find(173262381)
-
-=== Example test account
-
-http://flatley-farrell8724.myshopify.com
-info@thinkorange.pt
-oranges*
-
-front:
-whewya
-
-=== InvoiceXpress test account
-
-thinkorangeteste
-85635b50ef504e64144d2a666f248c7ff96403f1
-
 === Payment
 
-You can make test orders by using the following credentials:
+You can make test orders by using the following credentials on a Shopify Store with Bogus Gateway:
 Credit Card Number
 1
 Expiration Date
@@ -63,7 +45,7 @@ Expiration Date
 Card security code
 123
 
-=== test webhooks
+=== How to Test webhooks
 
 1) download pagekite
 curl -s https://pagekite.net/pk/ |sudo bash
@@ -71,33 +53,4 @@ curl -s https://pagekite.net/pk/ |sudo bash
 2) use pagekite
 pagekite.py 5000 thinkorange.pagekite.me
 
-=== Heroku logs
-
-heroku addons:open papertrail
-
-=== Other sessions
-
-  store_url   = "shop-translator-staging.myshopify.com"
-  store_token = "ad619d63ee7780d51858d7618df14fba"
-  session     = ShopifyAPI::Session.new(store_url, store_token)
-  ShopifyAPI::Base.activate_session(session)
-
-  store_url   = "acdtest.myshopify.com"
-  store_token = "8bfb4080b35e791e03890bfea8b7f84d"
-  session     = ShopifyAPI::Session.new(store_url, store_token)
-  ShopifyAPI::Base.activate_session(session)
-
-
-  store_url   = "benfas.myshopify.com"
-  store_token = "adba400a9bc715d1aca9ee88720ef1d3"
-  session     = ShopifyAPI::Session.new(store_url, store_token)
-  ShopifyAPI::Base.activate_session(session)
-
-  store_url   = "my-whey.myshopify.com"
-  store_token = "29991d2ccfe1d0e0624ba6fd50eaa2a1"
-  session     = ShopifyAPI::Session.new(store_url, store_token)
-  ShopifyAPI::Base.activate_session(session)
-
-
-
-
+3) forward requests to pagekite address
